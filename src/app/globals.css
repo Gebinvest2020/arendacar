@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Дизайн-система DriveRent: собственная палитра (не шаблон, без кислотных цветов) */
+@theme {
+  --color-ink: #0f172a;        /* основной тёмный (тексты, тёмные секции) */
+  --color-ink-soft: #1e293b;   /* тёмный, чуть светлее (hover) */
+  --color-muted: #f5f6f8;      /* светлый фон секций */
+  --color-line: #e6e8ec;       /* границы */
+  --color-accent: #f59e0b;     /* акцент (тёплый янтарь) */
+  --color-accent-dark: #d97706;/* акцент при наведении */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, Arial, Helvetica, sans-serif;
 }
