@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
 
 // Форма заявки пока только визуальная: не создаёт заявку и не обращается к API.
 export function CarBookingForm({ car }: { car: Car }) {

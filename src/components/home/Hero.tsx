@@ -6,13 +6,11 @@ import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { site, cities } from "@/data/site";
-import { cars } from "@/data/cars";
 import { formatDailyPrice } from "@/lib/currency";
 
 const perks = ["Без залога онлайн", "Подача за 30 минут", "Оплата при получении"];
-const minDailyPrice = Math.min(...cars.map((c) => c.dailyPrice));
 
-export function Hero() {
+export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }) {
   const router = useRouter();
   const [city, setCity] = useState<string>(site.defaultCity);
   const [pickupDate, setPickupDate] = useState("");
@@ -170,7 +168,9 @@ export function Hero() {
             <div className="absolute bottom-4 left-4 rounded-xl bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
               <p className="text-[11px] font-medium text-ink/50">Аренда</p>
               <p className="text-base font-extrabold leading-tight text-ink">
-                от {formatDailyPrice(minDailyPrice)}
+                {minimumDailyPrice !== null
+                  ? `от ${formatDailyPrice(minimumDailyPrice)}`
+                  : "Аренда авто"}
               </p>
             </div>
           </div>

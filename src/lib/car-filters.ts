@@ -1,15 +1,12 @@
 // Фильтрация и сортировка каталога + синхронизация фильтров с URL.
 // Значения в URL — латиницей (shareable ссылки), в данных — русские подписи.
 
-import type { Car, Transmission, Fuel, Drivetrain } from "@/data/cars";
-import { categories } from "@/data/categories";
+import type { Car, Transmission, Fuel, Drivetrain } from "@/types/car";
 
-type Option = { value: string; label: string };
+export type Option = { value: string; label: string };
 
-export const categoryOptions: Option[] = categories.map((c) => ({
-  value: c.slug,
-  label: c.name,
-}));
+// Опции категорий приходят из БД (через пропсы), список зависит от данных.
+// Остальные опции — фиксированные enum'ы.
 
 export const transmissionOptions: { value: string; label: Transmission }[] = [
   { value: "automatic", label: "Автомат" },
@@ -103,9 +100,10 @@ export function sortCars(list: Car[], sort: SortValue): Car[] {
       return copy.sort((a, b) => a.fullName.localeCompare(b.fullName, "ru"));
     case "popular":
     default:
+      // featured первыми; порядок остальных сохраняем стабильным (как из БД).
       return copy.sort((a, b) => {
         if (a.featured !== b.featured) return a.featured ? -1 : 1;
-        return Number(a.id) - Number(b.id);
+        return 0;
       });
   }
 }

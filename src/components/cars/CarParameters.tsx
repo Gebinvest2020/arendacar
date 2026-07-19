@@ -1,6 +1,5 @@
-import { getCategoryName } from "@/data/categories";
 import { formatCurrency } from "@/lib/currency";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
 
 function periodLabel(minDays: number, maxDays: number | null): string {
   if (maxDays === null) return `${minDays}+ суток`;
@@ -49,7 +48,7 @@ export function CarParameters({ car }: { car: Car }) {
     { label: "Количество мест", value: `${car.seats}` },
     { label: "Количество дверей", value: `${car.doors}` },
     { label: "Год выпуска", value: `${car.year}` },
-    { label: "Класс автомобиля", value: getCategoryName(car.category) },
+    { label: "Класс автомобиля", value: car.categoryName },
     { label: "Привод", value: car.drivetrain },
     { label: "Двигатель", value: car.engine },
     { label: "Багажник", value: `${car.luggage} л` },

@@ -2,12 +2,11 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { CatalogCarCard } from "@/components/cars/CatalogCarCard";
-import { cars } from "@/data/cars";
+import type { Car } from "@/types/car";
 
-export function PopularCars() {
-  // На главной показываем несколько популярных авто; полный список — в каталоге.
-  const featured = cars.filter((c) => c.featured);
-  const list = (featured.length >= 3 ? featured : cars).slice(0, 6);
+export function PopularCars({ cars }: { cars: Car[] }) {
+  // Список популярных авто готовит сервер (getFeaturedCars).
+  const list = cars;
 
   return (
     <section id="cars" className="bg-muted py-14 sm:py-16">

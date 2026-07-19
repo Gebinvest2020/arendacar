@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { GearIcon, FuelIcon, SeatIcon, CalendarIcon } from "./CarIcons";
-import { getCategoryName } from "@/data/categories";
 import { formatCurrency } from "@/lib/currency";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
 
 function Spec({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
@@ -29,7 +28,7 @@ export function CatalogCarCard({ car }: { car: Car }) {
           className="object-cover"
         />
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-ink shadow-sm backdrop-blur">
-          {getCategoryName(car.category)}
+          {car.categoryName}
         </span>
         <span
           className={`absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm backdrop-blur ${

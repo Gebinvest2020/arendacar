@@ -1,5 +1,5 @@
 import { CatalogCarCard } from "./CatalogCarCard";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
 
 export function SimilarCars({ cars }: { cars: Car[] }) {
   if (cars.length === 0) return null;

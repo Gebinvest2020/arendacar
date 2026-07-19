@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { CatalogSearch } from "@/components/cars/CatalogSearch";
 import { CarsCatalog } from "@/components/cars/CarsCatalog";
 import { parseFilters } from "@/lib/car-filters";
-import { cars } from "@/data/cars";
+import { getAllCars, getAllCategories } from "@/server/catalog";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -27,6 +27,13 @@ export default async function CarsPage({
   }
   const initialFilters = parseFilters(usp);
 
+  // Читаем каталог из БД. Ошибку перехватывает src/app/cars/error.tsx
+  // (пользователь видит понятное сообщение, а не пустой каталог).
+  const [cars, categories] = await Promise.all([
+    getAllCars(),
+    getAllCategories(),
+  ]);
+
   return (
     <>
       <section className="border-b border-line bg-muted/50">
@@ -47,7 +54,11 @@ export default async function CarsPage({
       </section>
 
       <Container className="py-10 sm:py-12">
-        <CarsCatalog cars={cars} initialFilters={initialFilters} />
+        <CarsCatalog
+          cars={cars}
+          categories={categories}
+          initialFilters={initialFilters}
+        />
       </Container>
     </>
   );

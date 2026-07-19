@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-label="Фото автомобиля готовится">
+  <rect width="640" height="400" fill="#f4f5f7"/>
+  <g fill="none" stroke="#c3c8d2" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120 250 l40 -70 q10 -18 34 -18 h172 q22 0 36 16 l60 66 h56 q22 0 22 22 v34 h-40" />
+    <path d="M120 250 v34 h44 M300 284 h96" />
+    <circle cx="196" cy="286" r="34"/>
+    <circle cx="452" cy="286" r="34"/>
+  </g>
+  <text x="320" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#9aa2b1">Фото готовится</text>
+</svg>

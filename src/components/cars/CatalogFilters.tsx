@@ -1,15 +1,13 @@
 "use client";
 
 import {
-  categoryOptions,
   transmissionOptions,
   fuelOptions,
   drivetrainOptions,
   seatsOptions,
   type CatalogFilters as Filters,
+  type Option,
 } from "@/lib/car-filters";
-
-type Option = { value: string; label: string };
 
 function SelectField({
   id,
@@ -50,10 +48,12 @@ function SelectField({
 
 export function CatalogFilters({
   filters,
+  categoryOptions,
   onChange,
   onReset,
 }: {
   filters: Filters;
+  categoryOptions: Option[];
   onChange: (patch: Partial<Filters>) => void;
   onReset: () => void;
 }) {

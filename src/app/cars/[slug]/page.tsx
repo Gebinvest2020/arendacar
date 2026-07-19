@@ -8,15 +8,19 @@ import { CarParameters } from "@/components/cars/CarParameters";
 import { CarCalculator } from "@/components/cars/CarCalculator";
 import { CarBookingForm } from "@/components/cars/CarBookingForm";
 import { SimilarCars } from "@/components/cars/SimilarCars";
-import { cars, getCarBySlug, getSimilarCars } from "@/data/cars";
-import { getCategoryName } from "@/data/categories";
+import { getCarBySlug, getSimilarCars, getAllCarSlugs } from "@/server/catalog";
 import { rentalTerms, site } from "@/data/site";
 import { formatCurrency } from "@/lib/currency";
 
+// Данные из БД обновляются без пересборки (ISR, 60 c). Новые slug рендерятся
+// по запросу (dynamicParams по умолчанию включён).
+export const revalidate = 60;
+
 type Params = { slug: string };
 
-export function generateStaticParams(): Params[] {
-  return cars.map((c) => ({ slug: c.slug }));
+export async function generateStaticParams(): Promise<Params[]> {
+  const slugs = await getAllCarSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -25,7 +29,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const car = getCarBySlug(slug);
+  const car = await getCarBySlug(slug);
   if (!car) return { title: "Автомобиль не найден" };
   return {
     title: `${car.fullName} — аренда в городе ${car.city} | ${site.brand}`,
@@ -39,10 +43,10 @@ export default async function CarPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const car = getCarBySlug(slug);
+  const car = await getCarBySlug(slug);
   if (!car) notFound();
 
-  const similar = getSimilarCars(car, 3);
+  const similar = await getSimilarCars(car, 3);
 
   return (
     <Container className="py-8 sm:py-10">
@@ -68,7 +72,7 @@ export default async function CarPage({
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-ink">
-              {getCategoryName(car.category)}
+              {car.categoryName}
             </span>
             <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-ink">
               {car.year} г.

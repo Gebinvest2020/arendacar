@@ -2,7 +2,7 @@
 // ВАЖНО: это демонстрационный расчёт на клиенте. В будущей рабочей форме
 // цену нужно пересчитывать на сервере и не доверять этому результату.
 
-import type { PriceTier } from "@/data/cars";
+import type { PriceTier } from "@/types/car";
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 

@@ -2,10 +2,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { CategoryIcon } from "./CategoryIcon";
-import { categories } from "@/data/categories";
 import { formatDailyPrice } from "@/lib/currency";
+import type { CategoryView } from "@/types/car";
 
-export function Categories() {
+export function Categories({ categories }: { categories: CategoryView[] }) {
   return (
     <section id="categories" className="py-14 sm:py-16">
       <Container>

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { calculateRental, combineDateTime } from "@/lib/pricing";
 import { formatCurrency } from "@/lib/currency";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
 
 export function CarCalculator({ car }: { car: Car }) {
   const [pickupDate, setPickupDate] = useState("");

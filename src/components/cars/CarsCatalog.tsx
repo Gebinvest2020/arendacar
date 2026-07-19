@@ -13,15 +13,20 @@ import {
   type CatalogFilters as Filters,
   type SortValue,
 } from "@/lib/car-filters";
-import type { Car } from "@/data/cars";
+import type { Car } from "@/types/car";
+
+type CategoryOption = { slug: string; name: string };
 
 export function CarsCatalog({
   cars,
+  categories,
   initialFilters,
 }: {
   cars: Car[];
+  categories: CategoryOption[];
   initialFilters: Filters;
 }) {
+  const categoryOptions = categories.map((c) => ({ value: c.slug, label: c.name }));
   const router = useRouter();
   const pathname = usePathname();
 
@@ -69,7 +74,12 @@ export function CarsCatalog({
           id="catalog-filters"
           className={`${showFilters ? "block" : "hidden"} rounded-2xl border border-line bg-muted/40 p-4 lg:block`}
         >
-          <CatalogFilters filters={filters} onChange={update} onReset={reset} />
+          <CatalogFilters
+            filters={filters}
+            categoryOptions={categoryOptions}
+            onChange={update}
+            onReset={reset}
+          />
         </div>
       </aside>
 
