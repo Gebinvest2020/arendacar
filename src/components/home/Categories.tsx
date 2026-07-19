@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { CategoryIcon } from "./CategoryIcon";
 import { categories } from "@/data/categories";
+import { formatDailyPrice } from "@/lib/currency";
 
 export function Categories() {
   return (
@@ -14,9 +16,9 @@ export function Categories() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => (
-            <a
+            <Link
               key={cat.slug}
-              href="#cars"
+              href={`/cars?category=${cat.slug}`}
               className="group flex items-center gap-4 rounded-2xl border border-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-muted text-ink transition-colors group-hover:bg-accent/15 group-hover:text-accent-dark">
@@ -26,10 +28,10 @@ export function Categories() {
                 <h3 className="text-lg font-semibold text-ink">{cat.name}</h3>
                 <p className="mt-0.5 text-sm text-ink/55">{cat.description}</p>
                 <p className="mt-1 text-sm font-semibold text-accent-dark">
-                  от {cat.priceFrom.toLocaleString("ru-RU")} грн/сутки
+                  от {formatDailyPrice(cat.priceFrom)}
                 </p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </Container>

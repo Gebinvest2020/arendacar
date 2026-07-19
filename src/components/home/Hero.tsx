@@ -2,22 +2,28 @@
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { site, cities } from "@/data/site";
+import { cars } from "@/data/cars";
+import { formatDailyPrice } from "@/lib/currency";
 
 const perks = ["Без залога онлайн", "Подача за 30 минут", "Оплата при получении"];
+const minDailyPrice = Math.min(...cars.map((c) => c.dailyPrice));
 
 export function Hero() {
+  const router = useRouter();
   const [city, setCity] = useState<string>(site.defaultCity);
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("10:00");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("10:00");
 
-  // Форма пока только визуальная: не обращается к серверу и не создаёт заявок.
+  // Форма без сервера: переводит в каталог. Даты пока не передаём (визуальный этап).
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    router.push("/cars");
   }
 
   const fieldClass =
@@ -164,7 +170,7 @@ export function Hero() {
             <div className="absolute bottom-4 left-4 rounded-xl bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
               <p className="text-[11px] font-medium text-ink/50">Аренда</p>
               <p className="text-base font-extrabold leading-tight text-ink">
-                от 850 грн<span className="text-sm font-semibold text-ink/60">/сутки</span>
+                от {formatDailyPrice(minDailyPrice)}
               </p>
             </div>
           </div>

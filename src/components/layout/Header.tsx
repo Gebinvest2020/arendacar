@@ -32,13 +32,13 @@ export function Header() {
           aria-label="Основная навигация"
         >
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="whitespace-nowrap text-sm font-medium text-ink/70 transition-colors hover:text-ink"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -66,7 +66,7 @@ export function Header() {
             {site.phone}
           </a>
           <ButtonLink
-            href="#hero"
+            href="/cars"
             variant="primary"
             size="md"
             className="whitespace-nowrap px-4"
@@ -110,14 +110,14 @@ export function Header() {
           <Container className="flex flex-col gap-4 py-5">
             <nav className="flex flex-col gap-1" aria-label="Мобильная навигация">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className="rounded-lg px-2 py-2.5 text-base font-medium text-ink/80 transition-colors hover:bg-muted hover:text-ink"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -149,7 +149,7 @@ export function Header() {
                 {site.phone}
               </a>
               <ButtonLink
-                href="#hero"
+                href="/cars"
                 variant="primary"
                 size="lg"
                 className="w-full"
