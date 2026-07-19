@@ -1,0 +1,126 @@
+// Prisma 7 — схема каталога аренды авто (Фаза 3A).
+// Генератор: prisma-client (Prisma 7), клиент генерируется в src/generated/prisma
+// и НЕ коммитится. Booking будет добавлен позже (Фаза 4).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  // Prisma 7: URL-адреса задаются в prisma.config.ts, а не здесь.
+  // Рантайм-клиент подключается через driver adapter (Neon), см. src/lib/db.ts.
+  provider = "postgresql"
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  HYBRID
+  ELECTRIC
+}
+
+enum Drivetrain {
+  FWD
+  RWD
+  AWD
+}
+
+model City {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars Car[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cars Car[]
+
+  // priceFrom намеренно не храним — вычисляется из минимальных цен авто категории.
+}
+
+model Car {
+  id              String       @id @default(cuid())
+  slug            String       @unique
+  brand           String
+  model           String
+  fullName        String
+  bodyType        String
+  year            Int
+  transmission    Transmission
+  fuel            FuelType
+  drivetrain      Drivetrain
+  seats           Int
+  doors           Int
+  luggage         Int
+  engine          String
+  airConditioning Boolean      @default(true)
+  dailyPrice      Int // USD, равен минимальному тарифу (30+ суток)
+  deposit         Int // USD, возвратный залог
+  featured        Boolean      @default(false)
+  available       Boolean      @default(true)
+  imageAlt        String
+  description     String
+  features        String[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  cityId     String
+  city       City     @relation(fields: [cityId], references: [id])
+
+  photos     CarPhoto[]
+  priceTiers PriceTier[]
+
+  @@index([categoryId])
+  @@index([cityId])
+  @@index([available])
+  @@index([featured])
+}
+
+model CarPhoto {
+  id        String   @id @default(cuid())
+  carId     String
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  isCover   Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([carId])
+}
+
+model PriceTier {
+  id         String   @id @default(cuid())
+  carId      String
+  car        Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  minDays    Int
+  maxDays    Int? // null = диапазон без верхней границы (30+)
+  pricePerDay Int
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([carId, minDays])
+  @@index([carId])
+}
