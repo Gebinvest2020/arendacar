@@ -45,3 +45,6 @@ next-env.d.ts
 
 # prisma generated client (не коммитим)
 /src/generated/
+
+# claude code (локальные настройки, не коммитим)
+.claude/

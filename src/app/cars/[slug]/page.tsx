@@ -5,8 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { CarGallery } from "@/components/cars/CarGallery";
 import { CarParameters } from "@/components/cars/CarParameters";
-import { CarCalculator } from "@/components/cars/CarCalculator";
-import { CarBookingForm } from "@/components/cars/CarBookingForm";
+import { CarBookingSection } from "@/components/cars/CarBookingSection";
 import { SimilarCars } from "@/components/cars/SimilarCars";
 import { getCarBySlug, getSimilarCars, getAllCarSlugs } from "@/server/catalog";
 import { rentalTerms, site } from "@/data/site";
@@ -124,16 +123,6 @@ export default async function CarPage({
         <CarParameters car={car} />
       </div>
 
-      {/* Предварительный калькулятор — отдельным блоком */}
-      <section id="calculator" className="mt-12 scroll-mt-24" aria-labelledby="calc-heading">
-        <h2 id="calc-heading" className="text-2xl font-bold tracking-tight text-ink">
-          Расчёт стоимости аренды
-        </h2>
-        <div className="mt-5 max-w-2xl">
-          <CarCalculator car={car} />
-        </div>
-      </section>
-
       {/* Условия аренды */}
       <section className="mt-12" aria-labelledby="terms-heading">
         <h2 id="terms-heading" className="text-2xl font-bold tracking-tight text-ink">
@@ -149,15 +138,10 @@ export default async function CarPage({
         </dl>
       </section>
 
-      {/* Заявка */}
-      <section className="mt-12" aria-labelledby="booking-heading">
-        <h2 id="booking-heading" className="text-2xl font-bold tracking-tight text-ink">
-          Бронирование
-        </h2>
-        <div className="mt-5 max-w-2xl">
-          <CarBookingForm car={car} />
-        </div>
-      </section>
+      {/* Расчёт + заявка (общие даты) */}
+      <div className="mt-12">
+        <CarBookingSection car={car} />
+      </div>
 
       {/* Похожие */}
       {similar.length > 0 && (

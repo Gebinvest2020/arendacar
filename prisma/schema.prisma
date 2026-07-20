@@ -1,6 +1,6 @@
-// Prisma 7 — схема каталога аренды авто (Фаза 3A).
+// Prisma 7 — схема каталога аренды авто.
 // Генератор: prisma-client (Prisma 7), клиент генерируется в src/generated/prisma
-// и НЕ коммитится. Booking будет добавлен позже (Фаза 4).
+// и НЕ коммитится. Фаза 4: добавлена модель Booking (заявки на аренду).
 
 generator client {
   provider = "prisma-client"
@@ -40,7 +40,8 @@ model City {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cars Car[]
+  cars     Car[]
+  bookings Booking[]
 }
 
 model Category {
@@ -90,6 +91,7 @@ model Car {
 
   photos     CarPhoto[]
   priceTiers PriceTier[]
+  bookings   Booking[]
 
   @@index([categoryId])
   @@index([cityId])
@@ -123,4 +125,67 @@ model PriceTier {
 
   @@unique([carId, minDays])
   @@index([carId])
+}
+
+// Фаза 4 — заявка на аренду.
+// Финансовые поля (rentalDays/dailyRate/rentalTotal/depositAmount) — snapshot:
+// рассчитываются сервером из БД и не доверяются клиенту. Залог хранится отдельно
+// и НЕ входит в rentalTotal. carName/carSlug — snapshot на случай изменения авто.
+
+enum BookingStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum BookingSource {
+  WEBSITE
+  PHONE
+  ADMIN
+}
+
+model Booking {
+  id             String @id @default(cuid())
+  publicId       String @unique @default(cuid()) // публичный безопасный идентификатор
+  idempotencyKey String @unique // защита от дублей при повторном submit
+
+  carId String
+  car   Car    @relation(fields: [carId], references: [id], onDelete: Restrict)
+
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id], onDelete: Restrict)
+
+  carName String // snapshot названия авто
+  carSlug String // snapshot slug авто
+
+  customerName  String
+  customerPhone String // нормализованный
+  customerEmail String?
+
+  pickupDate DateTime // UTC
+  returnDate DateTime // UTC
+
+  rentalDays    Int // snapshot, считает сервер
+  dailyRate     Int // snapshot тарифа (USD/сутки)
+  rentalTotal   Int // snapshot стоимости аренды (USD)
+  depositAmount Int // snapshot залога (USD, отдельно от аренды)
+
+  comment String?
+
+  consentAcceptedAt DateTime // ставит сервер (new Date())
+  privacyVersion    String // ставит сервер (константа)
+
+  status BookingStatus @default(NEW)
+  source BookingSource @default(WEBSITE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([carId])
+  @@index([cityId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([customerPhone])
 }

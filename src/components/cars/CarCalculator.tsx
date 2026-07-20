@@ -1,15 +1,24 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { calculateRental, combineDateTime } from "@/lib/pricing";
 import { formatCurrency } from "@/lib/currency";
 import type { Car } from "@/types/car";
+import type { BookingDates } from "./CarBookingSection";
 
-export function CarCalculator({ car }: { car: Car }) {
-  const [pickupDate, setPickupDate] = useState("");
-  const [pickupTime, setPickupTime] = useState("10:00");
-  const [returnDate, setReturnDate] = useState("");
-  const [returnTime, setReturnTime] = useState("10:00");
+// Калькулятор больше не хранит собственный state дат — получает их из
+// CarBookingSection через props, чтобы даты выбирались один раз для расчёта и
+// формы. Отвечает только за отображение ориентировочного расчёта.
+export function CarCalculator({
+  car,
+  dates,
+  onDatesChange,
+}: {
+  car: Car;
+  dates: BookingDates;
+  onDatesChange: (patch: Partial<BookingDates>) => void;
+}) {
+  const { pickupDate, pickupTime, returnDate, returnTime } = dates;
 
   const result = useMemo(() => {
     const pickup = combineDateTime(pickupDate, pickupTime);
@@ -37,25 +46,25 @@ export function CarCalculator({ car }: { car: Car }) {
           <label htmlFor="calc-pickup-date" className="mb-1 block text-xs font-semibold text-ink/60">
             Дата получения
           </label>
-          <input id="calc-pickup-date" type="date" value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} className={field} />
+          <input id="calc-pickup-date" type="date" value={pickupDate} onChange={(e) => onDatesChange({ pickupDate: e.target.value })} className={field} />
         </div>
         <div>
           <label htmlFor="calc-pickup-time" className="mb-1 block text-xs font-semibold text-ink/60">
             Время получения
           </label>
-          <input id="calc-pickup-time" type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} className={field} />
+          <input id="calc-pickup-time" type="time" value={pickupTime} onChange={(e) => onDatesChange({ pickupTime: e.target.value })} className={field} />
         </div>
         <div>
           <label htmlFor="calc-return-date" className="mb-1 block text-xs font-semibold text-ink/60">
             Дата возврата
           </label>
-          <input id="calc-return-date" type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className={field} />
+          <input id="calc-return-date" type="date" value={returnDate} onChange={(e) => onDatesChange({ returnDate: e.target.value })} className={field} />
         </div>
         <div>
           <label htmlFor="calc-return-time" className="mb-1 block text-xs font-semibold text-ink/60">
             Время возврата
           </label>
-          <input id="calc-return-time" type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} className={field} />
+          <input id="calc-return-time" type="time" value={returnTime} onChange={(e) => onDatesChange({ returnTime: e.target.value })} className={field} />
         </div>
       </div>
 
