@@ -189,3 +189,39 @@ model Booking {
   @@index([createdAt])
   @@index([customerPhone])
 }
+
+// Фаза 5 — авторизация админки.
+// AdminUser: логин по нормализованному email, пароль хранится только как
+// bcrypt-хеш. AdminSession: серверная сессия, в БД хранится SHA-256 от токена
+// (сам токен — только в httpOnly cookie). Роли пока одна (ADMIN), без RBAC.
+
+enum AdminRole {
+  ADMIN
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique // хранится в нормализованном виде (trim + lowercase)
+  passwordHash String // bcrypt-хеш, не сам пароль
+  name         String?
+  role         AdminRole @default(ADMIN)
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions AdminSession[]
+}
+
+model AdminSession {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique // SHA-256 от случайного токена из cookie
+  adminId    String
+  admin      AdminUser  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime  @default(now())
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
