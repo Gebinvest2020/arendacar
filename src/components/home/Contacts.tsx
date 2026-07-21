@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { site } from "@/data/site";
@@ -12,12 +13,13 @@ function LocationIcon() {
 }
 
 export function Contacts() {
+  const t = useTranslations();
   const phoneHref = "tel:" + site.phone.replace(/[^\d+]/g, "");
   const waHref = "https://wa.me/" + site.whatsapp.replace(/[^\d]/g, "");
   const tgHref = "https://t.me/" + site.telegram.replace(/^@/, "");
 
   const cards = [
-    { label: "Телефон", value: site.phone, href: phoneHref },
+    { label: t("contacts.phone"), value: site.phone, href: phoneHref },
     { label: "Telegram", value: site.telegram, href: tgHref },
     { label: "WhatsApp", value: site.whatsapp, href: waHref },
   ];
@@ -25,13 +27,9 @@ export function Contacts() {
   return (
     <section id="contacts" className="bg-muted py-14 sm:py-16">
       <Container>
-        <SectionHeading
-          title="Контакты"
-          subtitle="Свяжитесь с нами удобным способом — ответим и поможем с выбором."
-        />
+        <SectionHeading title={t("contacts.title")} subtitle={t("contacts.subtitle")} />
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {/* Каналы связи */}
           <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2 lg:grid-cols-1">
             {cards.map((card) => (
               <a
@@ -39,39 +37,30 @@ export function Contacts() {
                 href={card.href}
                 className="flex flex-col rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <span className="text-sm font-medium text-ink/50">
-                  {card.label}
-                </span>
-                <span className="mt-1 text-lg font-semibold text-ink">
-                  {card.value}
-                </span>
+                <span className="text-sm font-medium text-ink/50">{card.label}</span>
+                <span dir="ltr" className="mt-1 text-lg font-semibold text-ink text-start">{card.value}</span>
               </a>
             ))}
           </div>
 
-          {/* Доставка автомобиля */}
           <div className="rounded-2xl border border-line bg-white p-6">
             <div className="flex items-start gap-3">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/15 text-accent-dark">
                 <LocationIcon />
               </span>
               <div>
-                <h3 className="text-lg font-semibold text-ink">
-                  Доставка автомобиля по Одессе
-                </h3>
-                <p className="mt-1 text-sm leading-6 text-ink/60">
-                  Подача в аэропорт, на вокзал или по указанному адресу.
-                </p>
+                <h3 className="text-lg font-semibold text-ink">{t("contacts.deliveryTitle")}</h3>
+                <p className="mt-1 text-sm leading-6 text-ink/60">{t("contacts.deliveryText")}</p>
               </div>
             </div>
             <dl className="mt-5 space-y-2 border-t border-line pt-4 text-sm">
               <div className="flex justify-between gap-4">
-                <dt className="text-ink/50">Зона</dt>
-                <dd className="text-right font-medium text-ink">{site.address}</dd>
+                <dt className="text-ink/50">{t("contacts.zoneLabel")}</dt>
+                <dd className="text-end font-medium text-ink">{t("contacts.zoneValue")}</dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-ink/50">Часы работы</dt>
-                <dd className="text-right font-medium text-ink">{site.hours}</dd>
+                <dt className="text-ink/50">{t("contacts.hoursLabel")}</dt>
+                <dd className="text-end font-medium text-ink">{t("contacts.hoursValue")}</dd>
               </div>
             </dl>
           </div>

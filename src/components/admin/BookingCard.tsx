@@ -2,7 +2,7 @@ import Link from "next/link";
 import { StatusBadge } from "./StatusBadge";
 import { formatCurrency } from "@/lib/currency";
 import { formatBookingReference } from "@/lib/booking";
-import { formatDateRange, phoneDigits } from "@/lib/admin";
+import { formatDateRange, phoneDigits, BOOKING_LOCALE_SHORT } from "@/lib/admin";
 import type { AdminBookingListItem } from "@/types/booking";
 
 // Карточка заявки для телефона/планшета. Крупные touch-цели (h-11 ≈ 44px).
@@ -14,7 +14,17 @@ export function BookingCard({ b }: { b: AdminBookingListItem }) {
         <span className="text-xs font-medium text-ink/50">{formatBookingReference(b.publicId)}</span>
       </div>
 
-      <p className="mt-3 text-base font-bold text-ink">{b.carName}</p>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <p className="text-base font-bold text-ink">{b.carName}</p>
+        {b.withDriver && (
+          <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-semibold text-accent-dark">
+            С водителем
+          </span>
+        )}
+        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-ink/70">
+          {BOOKING_LOCALE_SHORT[b.bookingLocale] ?? b.bookingLocale}
+        </span>
+      </div>
 
       <div className="mt-2 text-sm text-ink/80">
         <p className="font-medium text-ink">{b.customerName}</p>

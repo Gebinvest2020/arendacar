@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/home/Hero";
 import { Categories } from "@/components/home/Categories";
 import { PopularCars } from "@/components/home/PopularCars";
@@ -16,7 +17,14 @@ import type { Car, CategoryView } from "@/types/car";
 // Данные из БД обновляются без пересборки (ISR, 60 c).
 export const revalidate = 60;
 
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   let featured: Car[] = [];
   let categories: CategoryView[] = [];
   let minimumDailyPrice: number | null = null;

@@ -36,6 +36,20 @@ export const SOURCE_LABELS: Record<string, string> = {
   ADMIN: "Админка",
 };
 
+// Язык заявки: краткий бейдж и полное название (для русской админки).
+export const BOOKING_LOCALE_SHORT: Record<string, string> = {
+  RU: "RU",
+  EN: "EN",
+  UK: "UK",
+  HE: "HE",
+};
+export const BOOKING_LOCALE_LABELS: Record<string, string> = {
+  RU: "Русский",
+  EN: "English",
+  UK: "Українська",
+  HE: "עברית",
+};
+
 const shortFmt = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" });
 const dateTimeFmt = new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeStyle: "short" });
 

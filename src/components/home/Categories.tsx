@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { CategoryIcon } from "./CategoryIcon";
@@ -6,13 +7,11 @@ import { formatDailyPrice } from "@/lib/currency";
 import type { CategoryView } from "@/types/car";
 
 export function Categories({ categories }: { categories: CategoryView[] }) {
+  const t = useTranslations();
   return (
     <section id="categories" className="py-14 sm:py-16">
       <Container>
-        <SectionHeading
-          title="Категории автомобилей"
-          subtitle="От экономичных городских авто до премиум-класса — подберём под задачу и бюджет."
-        />
+        <SectionHeading title={t("categories.title")} subtitle={t("categories.subtitle")} />
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => (
@@ -28,7 +27,7 @@ export function Categories({ categories }: { categories: CategoryView[] }) {
                 <h3 className="text-lg font-semibold text-ink">{cat.name}</h3>
                 <p className="mt-0.5 text-sm text-ink/55">{cat.description}</p>
                 <p className="mt-1 text-sm font-semibold text-accent-dark">
-                  от {formatDailyPrice(cat.priceFrom)}
+                  {t("common.from")} {formatDailyPrice(cat.priceFrom)}
                 </p>
               </div>
             </Link>

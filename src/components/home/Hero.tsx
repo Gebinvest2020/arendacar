@@ -2,15 +2,19 @@
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { site, cities } from "@/data/site";
+import { translateCity } from "@/lib/car-content";
+import type { Locale } from "@/lib/locale";
 import { formatDailyPrice } from "@/lib/currency";
 
-const perks = ["Без залога онлайн", "Подача за 30 минут", "Оплата при получении"];
-
 export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }) {
+  const t = useTranslations();
+  const locale = useLocale() as Locale;
+  const perks = [t("hero.perk1"), t("hero.perk2"), t("hero.perk3")];
   const router = useRouter();
   const [city, setCity] = useState<string>(site.defaultCity);
   const [pickupDate, setPickupDate] = useState("");
@@ -40,14 +44,13 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
         {/* Левая часть: заголовок + форма */}
         <div>
           <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/80">
-            Прокат авто в городе {site.defaultCity}
+            {t("hero.badge", { city: site.defaultCity })}
           </span>
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Аренда автомобилей быстро и без лишних сложностей
+            {t("hero.title")}
           </h1>
           <p className="mt-4 max-w-md text-base leading-7 text-white/70">
-            Выберите город и даты — подберём подходящий автомобиль. Прозрачные
-            цены, честный залог и понятные условия.
+            {t("hero.subtitle")}
           </p>
 
           {/* Форма выбора города и дат */}
@@ -61,7 +64,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                   htmlFor="hero-city"
                   className="mb-1 block text-xs font-semibold text-ink/60"
                 >
-                  Город
+                  {t("common.city")}
                 </label>
                 <select
                   id="hero-city"
@@ -71,7 +74,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                 >
                   {cities.map((c) => (
                     <option key={c} value={c}>
-                      {c}
+                      {translateCity(c, locale)}
                     </option>
                   ))}
                 </select>
@@ -82,7 +85,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                   htmlFor="pickup-date"
                   className="mb-1 block text-xs font-semibold text-ink/60"
                 >
-                  Дата получения
+                  {t("hero.pickupDate")}
                 </label>
                 <input
                   id="pickup-date"
@@ -97,7 +100,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                   htmlFor="pickup-time"
                   className="mb-1 block text-xs font-semibold text-ink/60"
                 >
-                  Время получения
+                  {t("hero.pickupTime")}
                 </label>
                 <input
                   id="pickup-time"
@@ -113,7 +116,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                   htmlFor="return-date"
                   className="mb-1 block text-xs font-semibold text-ink/60"
                 >
-                  Дата возврата
+                  {t("hero.returnDate")}
                 </label>
                 <input
                   id="return-date"
@@ -128,7 +131,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
                   htmlFor="return-time"
                   className="mb-1 block text-xs font-semibold text-ink/60"
                 >
-                  Время возврата
+                  {t("hero.returnTime")}
                 </label>
                 <input
                   id="return-time"
@@ -141,7 +144,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
             </div>
 
             <Button type="submit" variant="primary" size="lg" className="mt-4 w-full">
-              Найти автомобиль
+              {t("hero.submit")}
             </Button>
           </form>
         </div>
@@ -154,7 +157,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
             <div className="relative aspect-[4/3] w-full">
               <Image
                 src="/images/cars/hero-panamera.jpg"
-                alt="Современный автомобиль премиум-класса"
+                alt={t("hero.imageAlt")}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -166,11 +169,11 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
 
             {/* бейдж с ценой */}
             <div className="absolute bottom-4 left-4 rounded-xl bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
-              <p className="text-[11px] font-medium text-ink/50">Аренда</p>
+              <p className="text-[11px] font-medium text-ink/50">{t("hero.rent")}</p>
               <p className="text-base font-extrabold leading-tight text-ink">
                 {minimumDailyPrice !== null
-                  ? `от ${formatDailyPrice(minimumDailyPrice)}`
-                  : "Аренда авто"}
+                  ? t("hero.priceFrom", { price: formatDailyPrice(minimumDailyPrice) })
+                  : t("hero.rentFallback")}
               </p>
             </div>
           </div>

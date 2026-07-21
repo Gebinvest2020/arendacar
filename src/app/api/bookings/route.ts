@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { bookingInputSchema } from "@/lib/validation/booking";
 import { createBooking } from "@/server/bookings";
+import { sendBookingNotification } from "@/server/telegram/send-booking-notification";
 
 // POST /api/bookings — создание заявки на аренду.
 // Всегда динамический (пишет в БД), без кэша.
@@ -135,6 +136,21 @@ export async function POST(req: Request) {
         },
         statusByCode[created.code],
       );
+    }
+
+    // Telegram — ТОЛЬКО при реальном создании (created === true). Повтор по
+    // idempotencyKey и гонка дают created === false → уведомление не шлём.
+    // after() выполняет отправку ПОСЛЕ ответа клиенту, не задерживая его.
+    if (created.created && created.notify) {
+      const payload = created.notify;
+      after(async () => {
+        try {
+          await sendBookingNotification(payload);
+        } catch (e) {
+          // Ошибка Telegram не влияет на уже отправленный ответ клиенту.
+          console.error("after(sendBookingNotification) failed:", (e as Error)?.name ?? "Error");
+        }
+      });
     }
 
     // 201 — новая заявка, 200 — повтор по idempotencyKey.

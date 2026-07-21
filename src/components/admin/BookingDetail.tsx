@@ -2,7 +2,7 @@ import Link from "next/link";
 import { StatusSelect } from "./StatusSelect";
 import { formatCurrency } from "@/lib/currency";
 import { formatBookingReference } from "@/lib/booking";
-import { formatDateTime, phoneDigits, whatsappLink, SOURCE_LABELS } from "@/lib/admin";
+import { formatDateTime, phoneDigits, whatsappLink, SOURCE_LABELS, BOOKING_LOCALE_LABELS } from "@/lib/admin";
 import type { AdminBookingDetail } from "@/types/booking";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
@@ -58,6 +58,7 @@ export function BookingDetail({ b }: { b: AdminBookingDetail }) {
           <Row label="Комментарий">{b.comment ?? "—"}</Row>
           <Row label="Создана">{formatDateTime(b.createdAt)}</Row>
           <Row label="Источник">{SOURCE_LABELS[b.source] ?? b.source}</Row>
+          <Row label="Язык заявки">{BOOKING_LOCALE_LABELS[b.bookingLocale] ?? b.bookingLocale}</Row>
         </dl>
 
         <dl className="rounded-2xl border border-line bg-white p-5 sm:p-6">
@@ -70,6 +71,7 @@ export function BookingDetail({ b }: { b: AdminBookingDetail }) {
           <Row label="Цена за сутки">{formatCurrency(b.dailyRate)}</Row>
           <Row label="Стоимость аренды">{formatCurrency(b.rentalTotal)}</Row>
           <Row label="Залог (отдельно)">{formatCurrency(b.depositAmount)}</Row>
+          <Row label="Водитель">{b.withDriver ? "Да" : "Нет"}</Row>
         </dl>
       </div>
     </div>

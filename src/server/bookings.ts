@@ -7,6 +7,7 @@ import "server-only";
 import { prisma } from "@/lib/db";
 import { getRentalDays, selectPriceTier } from "@/lib/pricing";
 import { normalizePhone, PRIVACY_VERSION, formatBookingReference } from "@/lib/booking";
+import { localeToEnum, enumToLocale, type Locale, type BookingLocaleEnum } from "@/lib/locale";
 import type { BookingInput } from "@/lib/validation/booking";
 
 // Что безопасно отдавать клиенту (без внутренних id, телефона, ключей).
@@ -20,10 +21,30 @@ export type PublicBooking = {
   dailyRate: number;
   rentalTotal: number;
   depositAmount: number;
+  withDriver: boolean;
+  locale: Locale; // lowercase для клиента
+};
+
+// Отдельный безопасный payload для Telegram (НЕ отправляется клиенту).
+export type BookingNotification = {
+  reference: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string | null;
+  carName: string;
+  cityName: string;
+  pickupDate: string; // ISO
+  returnDate: string; // ISO
+  rentalDays: number;
+  withDriver: boolean;
+  bookingLocale: BookingLocaleEnum;
+  rentalTotal: number;
+  depositAmount: number;
+  comment: string | null;
 };
 
 export type CreateBookingResult =
-  | { ok: true; created: boolean; booking: PublicBooking }
+  | { ok: true; created: boolean; booking: PublicBooking; notify?: BookingNotification }
   | {
       ok: false;
       code: "CAR_NOT_FOUND" | "CAR_UNAVAILABLE" | "VALIDATION_ERROR";
@@ -50,6 +71,8 @@ function toPublic(b: {
   dailyRate: number;
   rentalTotal: number;
   depositAmount: number;
+  withDriver: boolean;
+  bookingLocale: BookingLocaleEnum;
 }): PublicBooking {
   return {
     publicId: b.publicId,
@@ -61,6 +84,8 @@ function toPublic(b: {
     dailyRate: b.dailyRate,
     rentalTotal: b.rentalTotal,
     depositAmount: b.depositAmount,
+    withDriver: b.withDriver,
+    locale: enumToLocale(b.bookingLocale),
   };
 }
 
@@ -85,6 +110,7 @@ export async function createBooking(input: BookingInput): Promise<CreateBookingR
       dailyPrice: true,
       deposit: true,
       cityId: true,
+      city: { select: { name: true } },
       priceTiers: {
         select: { minDays: true, maxDays: true, pricePerDay: true },
         orderBy: { minDays: "asc" },
@@ -169,12 +195,33 @@ export async function createBooking(input: BookingInput): Promise<CreateBookingR
     comment: input.comment?.trim() ? input.comment.trim() : null,
     consentAcceptedAt: new Date(),
     privacyVersion: PRIVACY_VERSION,
+    // Фаза 6: водитель и язык заявки. Суммы (rentalTotal/dailyRate/deposit)
+    // от этих полей НЕ зависят — цена водителя не добавляется.
+    withDriver: input.withDriver,
+    bookingLocale: localeToEnum(input.locale),
     // status NEW и source WEBSITE — из default'ов схемы.
   };
 
   try {
     const created = await prisma.booking.create({ data });
-    return { ok: true, created: true, booking: toPublic(created) };
+    // Безопасный payload для Telegram — только при реальном создании.
+    const notify: BookingNotification = {
+      reference: formatBookingReference(created.publicId),
+      customerName: created.customerName,
+      customerPhone: created.customerPhone,
+      customerEmail: created.customerEmail,
+      carName: created.carName,
+      cityName: car.city.name,
+      pickupDate: created.pickupDate.toISOString(),
+      returnDate: created.returnDate.toISOString(),
+      rentalDays: created.rentalDays,
+      withDriver: created.withDriver,
+      bookingLocale: created.bookingLocale as BookingLocaleEnum,
+      rentalTotal: created.rentalTotal,
+      depositAmount: created.depositAmount,
+      comment: created.comment,
+    };
+    return { ok: true, created: true, booking: toPublic(created), notify };
   } catch (e) {
     // Гонка: параллельный запрос с тем же idempotencyKey успел создать заявку.
     // Не отдаём 500 и не создаём дубль — возвращаем уже существующую заявку.

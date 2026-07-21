@@ -30,6 +30,8 @@ const listSelect = {
   rentalTotal: true,
   depositAmount: true,
   source: true,
+  withDriver: true,
+  bookingLocale: true,
 } as const;
 
 type ListRow = {
@@ -48,6 +50,8 @@ type ListRow = {
   rentalTotal: number;
   depositAmount: number;
   source: "WEBSITE" | "PHONE" | "ADMIN";
+  withDriver: boolean;
+  bookingLocale: "RU" | "EN" | "UK" | "HE";
 };
 
 // Страж: admin-контекст обязателен — доказательство, что вызов авторизован.
@@ -73,6 +77,8 @@ function mapItem(r: ListRow): AdminBookingListItem {
     rentalTotal: r.rentalTotal,
     depositAmount: r.depositAmount,
     source: r.source,
+    withDriver: r.withDriver,
+    bookingLocale: r.bookingLocale,
   };
 }
 

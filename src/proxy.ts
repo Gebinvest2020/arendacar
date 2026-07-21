@@ -1,13 +1,18 @@
+import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
+import { routing } from "@/i18n/routing";
 
-// Next.js 16: proxy заменяет middleware. Это ТОЛЬКО быстрый барьер по наличию
-// cookie. Здесь НЕТ Prisma и обращений к БД. Настоящая проверка доступа —
-// всегда через requireAdmin()/requireAdminPage() на сервере (Node).
+// Next.js 16: единый proxy. Совмещает:
+//   A. быстрый барьер админки (по наличию cookie, без Prisma);
+//   B. next-intl locale routing для публичного сайта;
+//   C. legacy-redirects старых URL (/, /cars, /cars/[slug]) на /{locale}/…
+// Настоящая авторизация админки — всегда через requireAdmin() в БД.
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 const COOKIE = "admin_session";
-
-// Публично доступны (без cookie): вход и API входа/выхода.
-const PUBLIC_PATHS = new Set<string>([
+// Публично доступны без cookie (админка НЕ локализуется).
+const ADMIN_PUBLIC = new Set<string>([
   "/admin/login",
   "/api/admin/login",
   "/api/admin/logout",
@@ -16,37 +21,40 @@ const PUBLIC_PATHS = new Set<string>([
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (PUBLIC_PATHS.has(pathname)) {
-    return NextResponse.next();
+  // --- Админка и её API: барьер по cookie, без локализации ---
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    if (ADMIN_PUBLIC.has(pathname)) return NextResponse.next();
+
+    const hasCookie = Boolean(req.cookies.get(COOKIE)?.value);
+    if (hasCookie) return NextResponse.next();
+
+    if (pathname.startsWith("/api/admin/")) {
+      return NextResponse.json(
+        { ok: false, error: "UNAUTHORIZED", message: "Требуется вход." },
+        { status: 401 },
+      );
+    }
+    const url = req.nextUrl.clone();
+    url.pathname = "/admin/login";
+    url.search = "";
+    if (pathname.startsWith("/admin/")) url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
   }
 
-  const hasCookie = Boolean(req.cookies.get(COOKIE)?.value);
-  if (hasCookie) {
-    // Cookie есть — пропускаем. Настоящая проверка будет на сервере.
-    return NextResponse.next();
-  }
+  // --- Прочие API (в т.ч. публичный /api/bookings): без локализации ---
+  if (pathname.startsWith("/api")) return NextResponse.next();
 
-  // Нет cookie:
-  if (pathname.startsWith("/api/admin/")) {
-    // API → 401 JSON.
-    return NextResponse.json(
-      { ok: false, error: "UNAUTHORIZED", message: "Требуется вход." },
-      { status: 401 },
-    );
-  }
-
-  // Страница → redirect на /admin/login с безопасным next (только внутренние /admin/*).
-  const url = req.nextUrl.clone();
-  url.pathname = "/admin/login";
-  url.search = "";
-  if (pathname.startsWith("/admin/")) {
-    url.searchParams.set("next", pathname);
-  }
-  return NextResponse.redirect(url);
+  // --- Публичный сайт: next-intl (определение языка + legacy-redirects) ---
+  // localePrefix:"always" → / и /cars автоматически ведут на /{detectedLocale}/…
+  return intlMiddleware(req);
 }
 
-// Узкий matcher: только админка и её API. Публичный сайт, ассеты, /api/bookings
-// и изображения не затрагиваются.
+// Матчер: всё, кроме служебных путей и файлов с расширением. Админка и её API
+// покрыты явно. _next/_vercel/файлы (favicon, robots, sitemap, изображения) — нет.
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/((?!_next|_vercel|.*\\..*).*)",
+    "/admin/:path*",
+    "/api/admin/:path*",
+  ],
 };

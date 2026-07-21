@@ -1,24 +1,41 @@
 import type { Metadata } from "next";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/Container";
 import { CatalogSearch } from "@/components/cars/CatalogSearch";
 import { CarsCatalog } from "@/components/cars/CarsCatalog";
 import { parseFilters } from "@/lib/car-filters";
 import { getAllCars, getAllCategories } from "@/server/catalog";
-import { site } from "@/data/site";
+import { assertCarContentComplete } from "@/lib/car-content";
+import { buildAlternates } from "@/lib/seo";
+import type { Locale } from "@/lib/locale";
 
-export const metadata: Metadata = {
-  title: `Каталог автомобилей — аренда в городе ${site.defaultCity} | ${site.brand}`,
-  description:
-    "Каталог автомобилей для аренды: эконом, комфорт, бизнес, SUV, минивэн и премиум. Фильтры, сортировка и прозрачные цены.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("homeTitle"),
+    description: t("homeDescription"),
+    alternates: buildAlternates(locale as Locale, "/cars"),
+  };
+}
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export default async function CarsPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<SearchParams>;
 }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale });
+
   const sp = await searchParams;
   const usp = new URLSearchParams();
   for (const [key, value] of Object.entries(sp)) {
@@ -27,24 +44,20 @@ export default async function CarsPage({
   }
   const initialFilters = parseFilters(usp);
 
-  // Читаем каталог из БД. Ошибку перехватывает src/app/cars/error.tsx
-  // (пользователь видит понятное сообщение, а не пустой каталог).
-  const [cars, categories] = await Promise.all([
-    getAllCars(),
-    getAllCategories(),
-  ]);
+  const [cars, categories] = await Promise.all([getAllCars(), getAllCategories()]);
+
+  // Строгая проверка: у всех активных машин есть переводы описания/комплектации.
+  assertCarContentComplete(cars);
 
   return (
     <>
       <section className="border-b border-line bg-muted/50">
         <Container className="py-10 sm:py-12">
           <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            Аренда автомобилей в Одессе
+            {t("categories.title")}
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-ink/60">
-            Выберите автомобиль под ваши задачи и бюджет. Прозрачные цены, честный
-            залог и понятные условия аренды. Даты в поиске пока носят
-            демонстрационный характер.
+            {t("categories.subtitle")}
           </p>
 
           <div className="mt-6">
@@ -54,11 +67,7 @@ export default async function CarsPage({
       </section>
 
       <Container className="py-10 sm:py-12">
-        <CarsCatalog
-          cars={cars}
-          categories={categories}
-          initialFilters={initialFilters}
-        />
+        <CarsCatalog cars={cars} categories={categories} initialFilters={initialFilters} />
       </Container>
     </>
   );

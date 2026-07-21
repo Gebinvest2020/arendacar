@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { CatalogFilters } from "./CatalogFilters";
 import { CatalogCarCard } from "./CatalogCarCard";
@@ -17,6 +18,13 @@ import type { Car } from "@/types/car";
 
 type CategoryOption = { slug: string; name: string };
 
+const SORT_KEY: Record<SortValue, string> = {
+  popular: "sortPopular",
+  "price-asc": "sortPriceAsc",
+  "price-desc": "sortPriceDesc",
+  name: "sortName",
+};
+
 export function CarsCatalog({
   cars,
   categories,
@@ -26,12 +34,11 @@ export function CarsCatalog({
   categories: CategoryOption[];
   initialFilters: Filters;
 }) {
+  const t = useTranslations("catalog");
   const categoryOptions = categories.map((c) => ({ value: c.slug, label: c.name }));
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname(); // включает /{locale}/cars — locale сохраняется
 
-  // Начальные фильтры приходят с сервера (из URL). Дальше локальное состояние
-  // ведёт и синхронно пишет в URL, чтобы ссылку можно было скопировать.
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -40,11 +47,9 @@ export function CarsCatalog({
     const qs = filtersToQuery(next);
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
-
   function update(patch: Partial<Filters>) {
     pushFilters({ ...filters, ...patch });
   }
-
   function reset() {
     pushFilters(emptyFilters);
   }
@@ -54,9 +59,7 @@ export function CarsCatalog({
 
   return (
     <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-8">
-      {/* Панель фильтров */}
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        {/* Переключатель фильтров на мобильном */}
         <button
           type="button"
           onClick={() => setShowFilters((v) => !v)}
@@ -64,10 +67,8 @@ export function CarsCatalog({
           aria-controls="catalog-filters"
           className="mb-4 flex w-full items-center justify-between rounded-xl border border-line bg-white px-4 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink lg:hidden"
         >
-          <span>
-            Фильтры{activeCount > 0 ? ` (${activeCount})` : ""}
-          </span>
-          <span className="text-ink/50">{showFilters ? "Скрыть" : "Показать"}</span>
+          <span>{t("filters")}{activeCount > 0 ? ` (${activeCount})` : ""}</span>
+          <span className="text-ink/50">{showFilters ? t("hide") : t("show")}</span>
         </button>
 
         <div
@@ -83,16 +84,13 @@ export function CarsCatalog({
         </div>
       </aside>
 
-      {/* Результаты */}
       <div className="mt-6 lg:mt-0">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-ink/70" aria-live="polite">
-            Найдено автомобилей: <span className="font-bold text-ink">{results.length}</span>
+            {t("found")} <span className="font-bold text-ink">{results.length}</span>
           </p>
           <div className="flex items-center gap-2">
-            <label htmlFor="catalog-sort" className="text-sm text-ink/60">
-              Сортировка
-            </label>
+            <label htmlFor="catalog-sort" className="text-sm text-ink/60">{t("sortLabel")}</label>
             <select
               id="catalog-sort"
               value={filters.sort}
@@ -101,7 +99,7 @@ export function CarsCatalog({
             >
               {sortOptions.map((o) => (
                 <option key={o.value} value={o.value}>
-                  {o.label}
+                  {t(SORT_KEY[o.value as SortValue])}
                 </option>
               ))}
             </select>
@@ -116,16 +114,14 @@ export function CarsCatalog({
           </div>
         ) : (
           <div className="mt-10 rounded-2xl border border-dashed border-line bg-white p-10 text-center">
-            <p className="text-lg font-semibold text-ink">Ничего не найдено</p>
-            <p className="mt-2 text-sm text-ink/60">
-              Попробуйте изменить или сбросить фильтры.
-            </p>
+            <p className="text-lg font-semibold text-ink">{t("notFound")}</p>
+            <p className="mt-2 text-sm text-ink/60">{t("notFoundText")}</p>
             <button
               type="button"
               onClick={reset}
               className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-ink transition-colors hover:bg-accent-dark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
-              Очистить фильтры
+              {t("clearFilters")}
             </button>
           </div>
         )}

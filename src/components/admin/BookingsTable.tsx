@@ -2,7 +2,7 @@ import Link from "next/link";
 import { StatusBadge } from "./StatusBadge";
 import { formatCurrency } from "@/lib/currency";
 import { formatBookingReference } from "@/lib/booking";
-import { formatDateShort, formatDateRange, phoneDigits } from "@/lib/admin";
+import { formatDateShort, formatDateRange, phoneDigits, BOOKING_LOCALE_SHORT } from "@/lib/admin";
 import type { AdminBookingListItem } from "@/types/booking";
 
 // Таблица заявок для компьютера. Обёрнута в overflow-x-auto (страница никогда не
@@ -35,7 +35,17 @@ export function BookingsTable({ items }: { items: AdminBookingListItem[] }) {
                   {b.customerPhone}
                 </a>
               </td>
-              <td className="px-4 py-3 text-ink">{b.carName}</td>
+              <td className="px-4 py-3 text-ink">
+                <span>{b.carName}</span>
+                <span className="ms-2 rounded-full bg-muted px-1.5 py-0.5 text-[11px] font-semibold text-ink/60">
+                  {BOOKING_LOCALE_SHORT[b.bookingLocale] ?? b.bookingLocale}
+                </span>
+                {b.withDriver && (
+                  <span className="ms-1 rounded-full bg-accent/15 px-1.5 py-0.5 text-[11px] font-semibold text-accent-dark">
+                    С водителем
+                  </span>
+                )}
+              </td>
               <td className="whitespace-nowrap px-4 py-3 text-ink/80">
                 {formatDateRange(b.pickupDate, b.returnDate)}
                 <span className="text-ink/50"> · {b.rentalDays} сут.</span>

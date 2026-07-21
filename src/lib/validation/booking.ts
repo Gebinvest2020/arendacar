@@ -5,6 +5,7 @@
 // отвергнуты как «unrecognized keys».
 
 import { z } from "zod";
+import { LOCALES } from "@/lib/locale";
 
 // Проверка ISO datetime: строка должна корректно парситься в дату.
 const isoDateTime = z
@@ -44,6 +45,11 @@ export const bookingInputSchema = z
     consent: z.literal(true, {
       message: "Необходимо согласие с условиями.",
     }),
+    // Нужен ли водитель. Строгий boolean: строка "true" НЕ принимается.
+    // Дефолт false — чтобы форма без этого поля пока продолжала работать.
+    withDriver: z.boolean({ message: "Некорректный выбор водителя." }).default(false),
+    // Язык оформления заявки. Неизвестные значения отклоняются; по умолчанию ru.
+    locale: z.enum(LOCALES, { message: "Некорректный язык." }).default("ru"),
     idempotencyKey: z.uuid("Некорректный ключ запроса."),
     // Honeypot: скрытое поле-ловушка. Для человека всегда пустое.
     website: z.string().max(100).optional(),

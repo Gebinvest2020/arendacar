@@ -146,6 +146,14 @@ enum BookingSource {
   ADMIN
 }
 
+// Язык, на котором клиент оформил заявку (Фаза 6). В админке — «Язык заявки».
+enum BookingLocale {
+  RU
+  EN
+  UK
+  HE
+}
+
 model Booking {
   id             String @id @default(cuid())
   publicId       String @unique @default(cuid()) // публичный безопасный идентификатор
@@ -179,6 +187,11 @@ model Booking {
 
   status BookingStatus @default(NEW)
   source BookingSource @default(WEBSITE)
+
+  // Фаза 6: нужен ли водитель (цену водителя НЕ храним, суммы не меняются)
+  // и язык оформления заявки. Дефолты не ломают существующие заявки.
+  withDriver    Boolean       @default(false)
+  bookingLocale BookingLocale @default(RU)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

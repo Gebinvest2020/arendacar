@@ -27,6 +27,8 @@ export type AdminBookingListItem = {
   rentalTotal: number;
   depositAmount: number;
   source: BookingSource;
+  withDriver: boolean;
+  bookingLocale: "RU" | "EN" | "UK" | "HE";
 };
 
 // Полная заявка для страницы детали (комментарий + город получения).
