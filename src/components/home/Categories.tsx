@@ -1,13 +1,16 @@
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "./SectionHeading";
 import { CategoryIcon } from "./CategoryIcon";
-import { formatDailyPrice } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
+import { categoryName, categoryDescription } from "@/lib/car-content";
+import type { Locale } from "@/lib/locale";
 import type { CategoryView } from "@/types/car";
 
 export function Categories({ categories }: { categories: CategoryView[] }) {
   const t = useTranslations();
+  const locale = useLocale() as Locale;
   return (
     <section id="categories" className="py-14 sm:py-16">
       <Container>
@@ -24,10 +27,10 @@ export function Categories({ categories }: { categories: CategoryView[] }) {
                 <CategoryIcon slug={cat.slug} className="[&>svg]:h-7 [&>svg]:w-7" />
               </div>
               <div className="min-w-0">
-                <h3 className="text-lg font-semibold text-ink">{cat.name}</h3>
-                <p className="mt-0.5 text-sm text-ink/55">{cat.description}</p>
+                <h3 className="text-lg font-semibold text-ink">{categoryName(cat.slug, locale)}</h3>
+                <p className="mt-0.5 text-sm text-ink/55">{categoryDescription(cat.slug, locale)}</p>
                 <p className="mt-1 text-sm font-semibold text-accent-dark">
-                  {t("common.from")} {formatDailyPrice(cat.priceFrom)}
+                  {t("common.from")} <span dir="ltr">{formatCurrency(cat.priceFrom)}</span>{t("common.perDay")}
                 </p>
               </div>
             </Link>

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { site, cities } from "@/data/site";
 import { translateCity } from "@/lib/car-content";
 import type { Locale } from "@/lib/locale";
-import { formatDailyPrice } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }) {
   const t = useTranslations();
@@ -171,9 +171,13 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
             <div className="absolute bottom-4 left-4 rounded-xl bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
               <p className="text-[11px] font-medium text-ink/50">{t("hero.rent")}</p>
               <p className="text-base font-extrabold leading-tight text-ink">
-                {minimumDailyPrice !== null
-                  ? t("hero.priceFrom", { price: formatDailyPrice(minimumDailyPrice) })
-                  : t("hero.rentFallback")}
+                {minimumDailyPrice !== null ? (
+                  <>
+                    {t("common.from")} <span dir="ltr">{formatCurrency(minimumDailyPrice)}</span>{t("common.perDay")}
+                  </>
+                ) : (
+                  t("hero.rentFallback")
+                )}
               </p>
             </div>
           </div>
