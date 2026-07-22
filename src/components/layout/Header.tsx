@@ -58,7 +58,7 @@ export function Header() {
         </Link>
 
         {/* Десктоп-навигация */}
-        <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label={t("nav.cars")}>
+        <nav className="hidden items-center gap-5 2xl:gap-7 xl:ms-6 xl:flex" aria-label={t("nav.cars")}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -71,7 +71,7 @@ export function Header() {
         </nav>
 
         {/* Правый блок: язык, город, телефон, CTA (десктоп) */}
-        <div className="hidden shrink-0 items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center gap-3 xl:flex">
           <LanguageSwitcher />
           {/* Город фиксирован — Одесса. Выбора нет. */}
           <span
@@ -100,7 +100,7 @@ export function Header() {
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? t("header.closeMenu") : t("header.openMenu")}
-          className="grid h-11 w-11 place-items-center rounded-[3px] border border-white/15 text-milk transition-colors hover:border-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/60 lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-[3px] border border-white/15 text-milk transition-colors hover:border-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/60 xl:hidden"
         >
           <span className="relative block h-4 w-5">
             <span className={`absolute left-0 block h-0.5 w-5 bg-current transition-transform duration-200 ${menuOpen ? "top-1/2 rotate-45" : "top-0"}`} />
@@ -112,7 +112,7 @@ export function Header() {
 
       {/* Мобильное меню */}
       {menuOpen && (
-        <div id="mobile-menu" className="border-t border-white/10 bg-graphite lg:hidden">
+        <div id="mobile-menu" className="border-t border-white/10 bg-graphite xl:hidden">
           <Container className="flex flex-col gap-4 py-5">
             <nav className="flex flex-col gap-1" aria-label={t("nav.cars")}>
               {navLinks.map((link) => (
