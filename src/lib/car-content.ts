@@ -57,6 +57,30 @@ export const CAR_DESCRIPTIONS: Record<string, L<string>> = {
     uk: "Компактний та практичний хетчбек із сучасним салоном. Зручний у місті, легко паркується, економічний на трасі.",
     he: "האצ'בק קומפקטי ומעשי עם תא נוסעים מודרני. נוח בעיר, קל לחניה וחסכוני בכביש המהיר.",
   },
+  "porsche-cayenne": {
+    ru: "Флагманский премиум-кроссовер Porsche с мощным двигателем 3.0 (340 л.с.), полным приводом и роскошным салоном. Динамика спорткара в сочетании с комфортом бизнес-класса.",
+    en: "Porsche's flagship premium SUV with a powerful 3.0-litre engine (340 hp), all-wheel drive and a luxurious interior. Sports-car dynamics combined with executive comfort.",
+    uk: "Флагманський преміум-кросовер Porsche з потужним двигуном 3.0 (340 к.с.), повним приводом і розкішним салоном. Динаміка спорткара в поєднанні з комфортом бізнес-класу.",
+    he: "רכב השטח הפרימיום הדגל של פורשה עם מנוע 3.0 עוצמתי (340 כ\"ס), הנעה כפולה ותא נוסעים מפואר. דינמיקה של מכונית ספורט בשילוב עם נוחות מחלקת מנהלים.",
+  },
+  "audi-sq5": {
+    ru: "Заряженный спортивный кроссовер Audi SQ5 с двигателем 3.0 (355 л.с.) и полным приводом quattro. Яркая динамика, премиальный салон и передовые технологии.",
+    en: "The high-performance Audi SQ5 sport crossover with a 3.0-litre engine (355 hp) and quattro all-wheel drive. Vivid dynamics, a premium interior and advanced technology.",
+    uk: "Заряджений спортивний кросовер Audi SQ5 з двигуном 3.0 (355 к.с.) та повним приводом quattro. Яскрава динаміка, преміальний салон і передові технології.",
+    he: "קרוסאובר הספורט העוצמתי Audi SQ5 עם מנוע 3.0 (355 כ\"ס) והנעת quattro כפולה. דינמיקה חיה, תא נוסעים פרימיום וטכנולוגיה מתקדמת.",
+  },
+  "porsche-macan": {
+    ru: "Компактный премиум-кроссовер Porsche Macan с двигателем 3.0 (340 л.с.), коробкой PDK и полным приводом. Спортивная управляемость и премиальный уровень отделки.",
+    en: "The compact Porsche Macan premium crossover with a 3.0-litre engine (340 hp), a PDK gearbox and all-wheel drive. Sporty handling and a premium level of finish.",
+    uk: "Компактний преміум-кросовер Porsche Macan з двигуном 3.0 (340 к.с.), коробкою PDK і повним приводом. Спортивна керованість і преміальний рівень оздоблення.",
+    he: "קרוסאובר הפרימיום הקומפקטי Porsche Macan עם מנוע 3.0 (340 כ\"ס), תיבת PDK והנעה כפולה. שליטה ספורטיבית ורמת גימור פרימיום.",
+  },
+  "audi-q3": {
+    ru: "Компактный премиум-кроссовер Audi Q3 с двигателем 2.0 (230 л.с.) и полным приводом quattro. Современный салон, богатое оснащение и удобная высокая посадка.",
+    en: "The compact Audi Q3 premium crossover with a 2.0-litre engine (230 hp) and quattro all-wheel drive. A modern interior, rich equipment and a comfortable high seating position.",
+    uk: "Компактний преміум-кросовер Audi Q3 з двигуном 2.0 (230 к.с.) та повним приводом quattro. Сучасний салон, багате оснащення і зручна висока посадка.",
+    he: "קרוסאובר הפרימיום הקומפקטי Audi Q3 עם מנוע 2.0 (230 כ\"ס) והנעת quattro כפולה. תא נוסעים מודרני, אבזור עשיר וישיבה גבוהה ונוחה.",
+  },
 };
 
 // --- Комплектация (features) по русскому значению из БД ---
@@ -78,6 +102,23 @@ export const FEATURE_LABELS: Record<string, L<string>> = {
   "Подогрев сидений": { ru: "Подогрев сидений", en: "Heated seats", uk: "Підігрів сидінь", he: "חימום מושבים" },
   "Электростеклоподъёмники": { ru: "Электростеклоподъёмники", en: "Power windows", uk: "Електросклопідйомники", he: "חלונות חשמליים" },
   "Мультируль": { ru: "Мультируль", en: "Multifunction steering wheel", uk: "Мультикермо", he: "הגה רב-תכליתי" },
+  "Трёхзонный климат-контроль": { ru: "Трёхзонный климат-контроль", en: "Three-zone climate control", uk: "Тризонний клімат-контроль", he: "בקרת אקלים תלת-אזורית" },
+  "Бесключевой доступ": { ru: "Бесключевой доступ", en: "Keyless entry", uk: "Безключовий доступ", he: "כניסה ללא מפתח" },
+  "Подогрев руля": { ru: "Подогрев руля", en: "Heated steering wheel", uk: "Підігрів керма", he: "הגה מחומם" },
+  "Вентиляция сидений": { ru: "Вентиляция сидений", en: "Ventilated seats", uk: "Вентиляція сидінь", he: "אוורור מושבים" },
+  "Память сидений": { ru: "Память сидений", en: "Seat memory", uk: "Пам'ять сидінь", he: "זיכרון מושבים" },
+  "Электропривод багажника": { ru: "Электропривод багажника", en: "Power tailgate", uk: "Електропривід багажника", he: "דלת תא מטען חשמלית" },
+  "Адаптивный круиз-контроль": { ru: "Адаптивный круиз-контроль", en: "Adaptive cruise control", uk: "Адаптивний круїз-контроль", he: "בקרת שיוט אדפטיבית" },
+  "Контроль слепых зон": { ru: "Контроль слепых зон", en: "Blind-spot monitoring", uk: "Контроль сліпих зон", he: "ניטור שטח מת" },
+  "Удержание в полосе": { ru: "Удержание в полосе", en: "Lane-keeping assist", uk: "Утримання в смузі", he: "שמירה על נתיב" },
+  "Матричные фары LED": { ru: "Матричные фары LED", en: "Matrix LED headlights", uk: "Матричні фари LED", he: "פנסי מטריקס LED" },
+  "Ксеноновые фары": { ru: "Ксеноновые фары", en: "Xenon headlights", uk: "Ксенонові фари", he: "פנסי קסנון" },
+  "Ambient-подсветка": { ru: "Ambient-подсветка", en: "Ambient lighting", uk: "Ambient-підсвітка", he: "תאורת אווירה" },
+  "Беспроводная зарядка": { ru: "Беспроводная зарядка", en: "Wireless charging", uk: "Бездротова зарядка", he: "טעינה אלחוטית" },
+  "Apple CarPlay / Android Auto": { ru: "Apple CarPlay / Android Auto", en: "Apple CarPlay / Android Auto", uk: "Apple CarPlay / Android Auto", he: "Apple CarPlay / Android Auto" },
+  "Аудиосистема Bose": { ru: "Аудиосистема Bose", en: "Bose audio system", uk: "Аудіосистема Bose", he: "מערכת שמע Bose" },
+  "Аудиосистема Bang & Olufsen": { ru: "Аудиосистема Bang & Olufsen", en: "Bang & Olufsen audio system", uk: "Аудіосистема Bang & Olufsen", he: "מערכת שמע Bang & Olufsen" },
+  "Пакет Sport Chrono": { ru: "Пакет Sport Chrono", en: "Sport Chrono package", uk: "Пакет Sport Chrono", he: "חבילת Sport Chrono" },
 };
 
 // --- Характеристики (значения из мэппера — русские) ---
