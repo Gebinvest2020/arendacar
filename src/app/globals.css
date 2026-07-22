@@ -96,3 +96,32 @@ body {
   box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.40);
 }
 .dr-field--area { height: auto; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+
+/* Скрытый горизонтальный scrollbar (лента миниатюр галереи) — кроссбраузерно.
+   Прокрутка колёсиком/трекпадом/свайпом/клавиатурой сохраняется. */
+.no-scrollbar {
+  -ms-overflow-style: none;      /* IE/Edge legacy */
+  scrollbar-width: none;         /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari/Edge */
+  width: 0;
+  height: 0;
+}
+
+/* Появление секций при попадании в область видимости (см. компонент Reveal).
+   Fail-safe: контент скрыт ТОЛЬКО когда JS активен (класс js-reveal на <html>).
+   Без JS или до готовности — контент виден (никогда не остаётся скрытым). */
+.js-reveal .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.reveal {
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal:not(.is-visible) { opacity: 1; transform: none; }
+  .reveal { transition: none; }
+}

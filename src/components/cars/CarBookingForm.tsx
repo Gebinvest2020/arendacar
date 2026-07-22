@@ -2,7 +2,8 @@
 
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
+import { Link } from "@/i18n/navigation";
 import { calculateRental, combineDateTime } from "@/lib/pricing";
 import { formatCurrency } from "@/lib/currency";
 import type { Locale } from "@/lib/locale";
@@ -26,6 +27,8 @@ const BCP47: Record<Locale, string> = { ru: "ru-RU", en: "en-US", uk: "uk-UA", h
 
 export function CarBookingForm({ car, dates }: { car: Car; dates: BookingDates }) {
   const t = useTranslations("booking");
+  const tc = useTranslations("common");
+  const tp = useTranslations("carPage");
   const locale = useLocale() as Locale;
 
   const [name, setName] = useState("");
@@ -123,14 +126,18 @@ export function CarBookingForm({ car, dates }: { car: Car; dates: BookingDates }
   if (success) {
     return (
       <div className="dr-panel p-5 sm:p-6">
-        <div className="flex items-center gap-2.5">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden="true">✓</span>
-          <h3 className="font-display text-xl font-semibold text-milk">{t("successTitle")}</h3>
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-champagne text-champagne" aria-hidden="true">✓</span>
+          <h3 className="font-display text-2xl font-semibold text-milk">{t("successTitle")}</h3>
         </div>
         <p className="mt-2 text-sm text-milk/75">{t("successText")}</p>
 
+        <div className="mt-5 rounded-[3px] border border-champagne/30 bg-champagne/[0.06] px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-milk-dim">{t("reference")}</p>
+          <p className="mt-0.5 font-display text-3xl font-semibold text-champagne" dir="ltr">{success.reference}</p>
+        </div>
+
         <dl className="mt-4 space-y-2 rounded-[3px] border border-white/10 bg-white/[0.03] p-4 text-sm">
-          <div className="flex justify-between"><dt className="text-milk-dim">{t("reference")}</dt><dd className="font-bold text-champagne" dir="ltr">{success.reference}</dd></div>
           <div className="flex justify-between"><dt className="text-milk-dim">{t("car")}</dt><dd className="font-semibold text-milk" dir="ltr">{success.carName}</dd></div>
           <div className="flex justify-between"><dt className="text-milk-dim">{t("pickup")}</dt><dd className="font-semibold text-milk">{formatDateTime(success.pickupDate)}</dd></div>
           <div className="flex justify-between"><dt className="text-milk-dim">{t("return")}</dt><dd className="font-semibold text-milk">{formatDateTime(success.returnDate)}</dd></div>
@@ -142,6 +149,13 @@ export function CarBookingForm({ car, dates }: { car: Car; dates: BookingDates }
         </dl>
 
         <p className="mt-3 text-xs text-milk-dim">{t("disclaimer")}</p>
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/cars" variant="champagne" size="lg" className="sm:flex-1">{tc("pickCar")}</ButtonLink>
+          <Link href="/" className="inline-flex min-h-11 items-center justify-center rounded-[3px] border border-white/20 px-5 text-sm font-semibold text-milk transition-colors hover:border-champagne hover:text-champagne sm:flex-1">
+            {tp("breadcrumbHome")}
+          </Link>
+        </div>
       </div>
     );
   }

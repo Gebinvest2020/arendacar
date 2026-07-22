@@ -62,7 +62,7 @@ export function CarParameters({ car }: { car: Car }) {
         <Column title={t("pricesTitle")}>
           <dl className="space-y-0.5">
             {car.priceTiers.map((tier, i) => (
-              <div key={tier.minDays} className={`flex items-center justify-between rounded-[3px] px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
+              <div key={tier.minDays} className={`flex items-center justify-between rounded-[3px] px-3 py-3 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
                 <dt className="text-milk/70">{periodLabel(tier.minDays, tier.maxDays)}</dt>
                 <dd className="font-bold text-milk" dir="ltr">{formatCurrency(tier.pricePerDay)}</dd>
               </div>
@@ -81,7 +81,7 @@ export function CarParameters({ car }: { car: Car }) {
         <Column title={t("specsTitle")}>
           <dl className="space-y-0.5">
             {specs.map((row, i) => (
-              <div key={row.label} className={`flex items-center justify-between gap-3 rounded-[3px] px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
+              <div key={row.label} className={`flex items-center justify-between gap-3 rounded-[3px] px-3 py-3 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
                 <dt className="text-milk-dim">{row.label}</dt>
                 <dd className="text-end font-semibold text-milk" dir={row.ltr ? "ltr" : undefined}>{row.value}</dd>
               </div>

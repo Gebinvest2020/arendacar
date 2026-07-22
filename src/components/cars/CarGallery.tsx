@@ -62,7 +62,7 @@ export function CarGallery({
       </div>
 
       {hasMany && (
-        <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+        <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-1">
           {list.map((src, i) => (
             <button
               key={src + i}

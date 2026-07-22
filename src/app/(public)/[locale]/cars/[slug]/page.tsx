@@ -90,7 +90,7 @@ export default async function CarPage({ params }: { params: Promise<Params> }) {
 
             <h1 dir="ltr" className="font-display mt-4 text-4xl font-semibold leading-[1.02] tracking-tight text-milk text-start sm:text-5xl">{car.fullName}</h1>
 
-            <p className="mt-4 text-base leading-7 text-milk/75">{carDescription(slug, l)}</p>
+            <p className="mt-4 max-w-prose text-base leading-7 text-milk/75">{carDescription(slug, l)}</p>
 
             <div className="dr-panel mt-6 flex flex-wrap items-end gap-x-8 gap-y-3 p-5">
               <div>

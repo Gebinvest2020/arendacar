@@ -18,18 +18,18 @@ export function Advantages() {
   }));
 
   return (
-    <section id="advantages" className="py-14 sm:py-16">
+    <section id="advantages" className="bg-graphite py-16 sm:py-20">
       <Container>
-        <SectionHeading title={t("advantages.title")} subtitle={t("advantages.subtitle")} />
+        <SectionHeading title={t("advantages.title")} subtitle={t("advantages.subtitle")} tone="onDark" />
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <div key={item.title} className="rounded-2xl border border-line bg-white p-6">
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-accent/15 text-accent-dark">
+            <div key={item.title} className="border-t border-white/10 pt-5">
+              <span className="grid h-9 w-9 place-items-center rounded-[3px] border border-champagne/50 text-champagne">
                 <CheckIcon />
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-ink">{item.title}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-ink/60">{item.text}</p>
+              </span>
+              <h3 className="mt-4 text-lg font-semibold text-milk">{item.title}</h3>
+              <p className="mt-1.5 text-sm leading-6 text-milk/60">{item.text}</p>
             </div>
           ))}
         </div>

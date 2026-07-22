@@ -13,15 +13,15 @@ export function Terms() {
   ];
 
   return (
-    <section id="terms" className="py-14 sm:py-16">
+    <section id="terms" className="bg-graphite py-16 sm:py-20">
       <Container>
-        <SectionHeading title={t("terms.title")} subtitle={t("terms.subtitle")} />
+        <SectionHeading title={t("terms.title")} subtitle={t("terms.subtitle")} tone="onDark" />
 
-        <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <dl className="dr-panel mt-10 grid divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3">
           {terms.map((term) => (
-            <div key={term.label} className="rounded-2xl border border-line bg-white p-6">
-              <dt className="text-sm font-medium text-ink/50">{term.label}</dt>
-              <dd className="mt-1 text-lg font-semibold text-ink">{term.value}</dd>
+            <div key={term.label} className="p-5 sm:p-6">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-milk-dim">{term.label}</dt>
+              <dd className="mt-1.5 text-lg font-semibold text-milk">{term.value}</dd>
             </div>
           ))}
         </dl>
