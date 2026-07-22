@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { CatalogCarCard } from "./CatalogCarCard";
+import { PremiumCarCard } from "./PremiumCarCard";
 import type { Car } from "@/types/car";
 
 export function SimilarCars({ cars }: { cars: Car[] }) {
@@ -8,12 +8,12 @@ export function SimilarCars({ cars }: { cars: Car[] }) {
 
   return (
     <section aria-labelledby="similar-heading">
-      <h2 id="similar-heading" className="text-2xl font-bold tracking-tight text-ink">
+      <h2 id="similar-heading" className="font-display text-3xl font-semibold tracking-tight text-milk">
         {t("similar")}
       </h2>
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cars.map((car) => (
-          <CatalogCarCard key={car.id} car={car} />
+          <PremiumCarCard key={car.id} car={car} />
         ))}
       </div>
     </section>

@@ -62,3 +62,37 @@ body {
 .animate-rise {
   animation: dr-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* --- Переиспользуемые тёмные поверхности и поля (Phase Premium-2) --- */
+.dr-panel {
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: #202227; /* surface2 */
+}
+.dr-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #a9a39a; /* milk-dim */
+}
+.dr-field {
+  height: 2.75rem;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  color: #f4f2ee; /* milk */
+  color-scheme: dark;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.dr-field::placeholder { color: #a9a39a; }
+.dr-field:hover { border-color: rgba(255, 255, 255, 0.25); }
+.dr-field:focus-visible {
+  outline: none;
+  border-color: #c8a96a; /* champagne */
+  box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.40);
+}
+.dr-field--area { height: auto; padding-top: 0.5rem; padding-bottom: 0.5rem; }

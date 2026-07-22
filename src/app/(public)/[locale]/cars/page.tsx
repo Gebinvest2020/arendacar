@@ -5,7 +5,8 @@ import { CatalogSearch } from "@/components/cars/CatalogSearch";
 import { CarsCatalog } from "@/components/cars/CarsCatalog";
 import { parseFilters } from "@/lib/car-filters";
 import { getAllCars, getAllCategories } from "@/server/catalog";
-import { assertCarContentComplete } from "@/lib/car-content";
+import { assertCarContentComplete, translateCity } from "@/lib/car-content";
+import { site } from "@/data/site";
 import { buildAlternates } from "@/lib/seo";
 import type { Locale } from "@/lib/locale";
 
@@ -49,15 +50,24 @@ export default async function CarsPage({
   // Строгая проверка: у всех активных машин есть переводы описания/комплектации.
   assertCarContentComplete(cars);
 
+  const availableCount = cars.filter((c) => c.available).length;
+
   return (
-    <>
-      <section className="border-b border-line bg-muted/50">
-        <Container className="py-10 sm:py-12">
-          <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+    <div className="bg-graphite text-milk">
+      <section className="border-b border-white/10 bg-graphite-2">
+        <Container className="py-12 sm:py-16">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-champagne">
+            <span aria-hidden="true" className="h-px w-6 bg-champagne/70" />
+            <span aria-hidden="true">◈</span> {translateCity(site.defaultCity, locale as Locale)}
+          </span>
+          <h1 className="font-display mt-4 text-4xl font-semibold leading-tight tracking-tight text-milk sm:text-5xl">
             {t("categories.title")}
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-ink/60">
+          <p className="mt-3 max-w-2xl text-base leading-7 text-milk/70">
             {t("categories.subtitle")}
+          </p>
+          <p className="mt-4 text-sm text-milk-dim" aria-live="polite">
+            {t("catalog.found")} <span className="font-semibold text-milk">{availableCount}</span>
           </p>
 
           <div className="mt-6">
@@ -69,6 +79,6 @@ export default async function CarsPage({
       <Container className="py-10 sm:py-12">
         <CarsCatalog cars={cars} categories={categories} initialFilters={initialFilters} />
       </Container>
-    </>
+    </div>
   );
 }

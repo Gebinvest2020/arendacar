@@ -21,8 +21,8 @@ function CheckIcon() {
 
 function Column({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
-      <h3 className="text-lg font-bold text-ink">{title}</h3>
+    <div className="dr-panel flex h-full flex-col p-5 sm:p-6">
+      <h3 className="font-display text-xl font-semibold text-milk">{title}</h3>
       <div className="mt-4 flex-1">{children}</div>
     </div>
   );
@@ -55,48 +55,46 @@ export function CarParameters({ car }: { car: Car }) {
   const features = translateFeatures(car.features, locale);
 
   return (
-    <section aria-labelledby="params-heading" className="rounded-3xl bg-muted/50 p-5 sm:p-6 lg:p-8">
-      <h2 id="params-heading" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("paramsTitle")}</h2>
+    <section aria-labelledby="params-heading">
+      <h2 id="params-heading" className="font-display text-3xl font-semibold tracking-tight text-milk">{t("paramsTitle")}</h2>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <Column title={t("pricesTitle")}>
-          <dl className="space-y-1">
+          <dl className="space-y-0.5">
             {car.priceTiers.map((tier, i) => (
-              <div key={tier.minDays} className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-muted/60" : ""}`}>
-                <dt className="text-ink/70">{periodLabel(tier.minDays, tier.maxDays)}</dt>
-                <dd className="font-bold text-ink" dir="ltr">{formatCurrency(tier.pricePerDay)}</dd>
+              <div key={tier.minDays} className={`flex items-center justify-between rounded-[3px] px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
+                <dt className="text-milk/70">{periodLabel(tier.minDays, tier.maxDays)}</dt>
+                <dd className="font-bold text-milk" dir="ltr">{formatCurrency(tier.pricePerDay)}</dd>
               </div>
             ))}
           </dl>
 
-          <div className="mt-4 flex items-end justify-between border-t border-line pt-4">
+          <div className="mt-4 flex items-end justify-between border-t border-white/10 pt-4">
             <div>
-              <p className="text-sm font-medium text-ink">{t("deposit")}</p>
-              <p className="text-xs text-ink/50">{t("depositReturnableShort")}</p>
+              <p className="text-sm font-medium text-milk">{t("deposit")}</p>
+              <p className="text-xs text-milk-dim">{t("depositReturnableShort")}</p>
             </div>
-            <p className="text-lg font-extrabold text-ink" dir="ltr">{formatCurrency(car.deposit)}</p>
+            <p className="text-lg font-extrabold text-champagne" dir="ltr">{formatCurrency(car.deposit)}</p>
           </div>
         </Column>
 
         <Column title={t("specsTitle")}>
-          <dl className="space-y-1">
+          <dl className="space-y-0.5">
             {specs.map((row, i) => (
-              <div key={row.label} className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-muted/60" : ""}`}>
-                <dt className="text-ink/60">{row.label}</dt>
-                <dd className="text-end font-semibold text-ink" dir={row.ltr ? "ltr" : undefined}>{row.value}</dd>
+              <div key={row.label} className={`flex items-center justify-between gap-3 rounded-[3px] px-3 py-2.5 text-sm ${i % 2 === 1 ? "bg-white/[0.03]" : ""}`}>
+                <dt className="text-milk-dim">{row.label}</dt>
+                <dd className="text-end font-semibold text-milk" dir={row.ltr ? "ltr" : undefined}>{row.value}</dd>
               </div>
             ))}
           </dl>
         </Column>
 
         <Column title={t("featuresTitle")}>
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {features.map((feature) => (
-              <li key={feature} className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm">
-                <span className="text-ink">{feature}</span>
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent/15 text-accent-dark">
-                  <CheckIcon />
-                </span>
+              <li key={feature} className="flex items-center gap-2.5 rounded-[3px] px-3 py-2 text-sm">
+                <span className="text-champagne" aria-hidden="true"><CheckIcon /></span>
+                <span className="text-milk/85">{feature}</span>
               </li>
             ))}
           </ul>

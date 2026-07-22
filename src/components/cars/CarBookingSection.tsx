@@ -31,7 +31,7 @@ export function CarBookingSection({ car }: { car: Car }) {
   return (
     <div className="space-y-12">
       <section id="calculator" className="scroll-mt-24" aria-labelledby="calc-heading">
-        <h2 id="calc-heading" className="text-2xl font-bold tracking-tight text-ink">
+        <h2 id="calc-heading" className="font-display text-3xl font-semibold tracking-tight text-milk">
           {t("calcSectionTitle")}
         </h2>
         <div className="mt-5 max-w-2xl">
@@ -40,7 +40,7 @@ export function CarBookingSection({ car }: { car: Car }) {
       </section>
 
       <section id="booking" className="scroll-mt-24" aria-labelledby="booking-heading">
-        <h2 id="booking-heading" className="text-2xl font-bold tracking-tight text-ink">
+        <h2 id="booking-heading" className="font-display text-3xl font-semibold tracking-tight text-milk">
           {t("bookingSectionTitle")}
         </h2>
         <div className="mt-5 max-w-2xl">

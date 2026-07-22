@@ -33,56 +33,53 @@ export function CarCalculator({
     return { result: r, errorKey: key };
   }, [pickupDate, pickupTime, returnDate, returnTime, car.priceTiers, car.deposit]);
 
-  const field =
-    "h-11 w-full rounded-lg border border-line bg-white px-3 text-sm text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
-
   return (
-    <div className="rounded-2xl border border-line bg-white p-5 sm:p-6">
-      <h3 className="text-lg font-bold text-ink">{t("title")}</h3>
-      <p className="mt-1 text-sm text-ink/60">{t("subtitle")}</p>
+    <div className="dr-panel p-5 sm:p-6">
+      <h3 className="font-display text-xl font-semibold text-milk">{t("title")}</h3>
+      <p className="mt-1 text-sm text-milk-dim">{t("subtitle")}</p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <div>
-          <label htmlFor="calc-pickup-date" className="mb-1 block text-xs font-semibold text-ink/60">{t("pickupDate")}</label>
-          <input id="calc-pickup-date" type="date" value={pickupDate} onChange={(e) => onDatesChange({ pickupDate: e.target.value })} className={field} />
+          <label htmlFor="calc-pickup-date" className="dr-label">{t("pickupDate")}</label>
+          <input id="calc-pickup-date" type="date" value={pickupDate} onChange={(e) => onDatesChange({ pickupDate: e.target.value })} className="dr-field" />
         </div>
         <div>
-          <label htmlFor="calc-pickup-time" className="mb-1 block text-xs font-semibold text-ink/60">{t("pickupTime")}</label>
-          <input id="calc-pickup-time" type="time" value={pickupTime} onChange={(e) => onDatesChange({ pickupTime: e.target.value })} className={field} />
+          <label htmlFor="calc-pickup-time" className="dr-label">{t("pickupTime")}</label>
+          <input id="calc-pickup-time" type="time" value={pickupTime} onChange={(e) => onDatesChange({ pickupTime: e.target.value })} className="dr-field" />
         </div>
         <div>
-          <label htmlFor="calc-return-date" className="mb-1 block text-xs font-semibold text-ink/60">{t("returnDate")}</label>
-          <input id="calc-return-date" type="date" value={returnDate} onChange={(e) => onDatesChange({ returnDate: e.target.value })} className={field} />
+          <label htmlFor="calc-return-date" className="dr-label">{t("returnDate")}</label>
+          <input id="calc-return-date" type="date" value={returnDate} onChange={(e) => onDatesChange({ returnDate: e.target.value })} className="dr-field" />
         </div>
         <div>
-          <label htmlFor="calc-return-time" className="mb-1 block text-xs font-semibold text-ink/60">{t("returnTime")}</label>
-          <input id="calc-return-time" type="time" value={returnTime} onChange={(e) => onDatesChange({ returnTime: e.target.value })} className={field} />
+          <label htmlFor="calc-return-time" className="dr-label">{t("returnTime")}</label>
+          <input id="calc-return-time" type="time" value={returnTime} onChange={(e) => onDatesChange({ returnTime: e.target.value })} className="dr-field" />
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl bg-muted p-4" aria-live="polite">
+      <div className="mt-5 rounded-[3px] border border-white/10 bg-white/[0.03] p-4" aria-live="polite">
         {result.valid ? (
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <dt className="text-ink/60">{t("days")}</dt>
-              <dd className="font-semibold text-ink" dir="ltr">{result.days}</dd>
+              <dt className="text-milk-dim">{t("days")}</dt>
+              <dd className="font-semibold text-milk" dir="ltr">{result.days}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-ink/60">{t("pricePerDay")}</dt>
-              <dd className="font-semibold text-ink" dir="ltr">{formatCurrency(result.pricePerDay)}</dd>
+              <dt className="text-milk-dim">{t("pricePerDay")}</dt>
+              <dd className="font-semibold text-milk" dir="ltr">{formatCurrency(result.pricePerDay)}</dd>
             </div>
-            <div className="flex justify-between border-t border-line pt-2">
-              <dt className="text-ink/60">{t("rentalCost")}</dt>
-              <dd className="text-base font-extrabold text-ink" dir="ltr">{formatCurrency(result.rentalTotal)}</dd>
+            <div className="flex justify-between border-t border-white/10 pt-2">
+              <dt className="text-milk-dim">{t("rentalCost")}</dt>
+              <dd className="text-lg font-extrabold text-champagne" dir="ltr">{formatCurrency(result.rentalTotal)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-ink/60">{t("depositSep")}</dt>
-              <dd className="font-semibold text-ink" dir="ltr">{formatCurrency(result.deposit)}</dd>
+              <dt className="text-milk-dim">{t("depositSep")}</dt>
+              <dd className="font-semibold text-milk" dir="ltr">{formatCurrency(result.deposit)}</dd>
             </div>
-            <p className="pt-2 text-xs text-ink/50">{t("note")}</p>
+            <p className="pt-2 text-xs text-milk-dim">{t("note")}</p>
           </dl>
         ) : (
-          <p className="text-sm text-ink/60">{errorKey ? t(errorKey) : ""}</p>
+          <p className="text-sm text-milk-dim">{errorKey ? t(errorKey) : ""}</p>
         )}
       </div>
     </div>

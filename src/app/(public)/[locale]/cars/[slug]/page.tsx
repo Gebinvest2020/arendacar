@@ -8,6 +8,7 @@ import { CarGallery } from "@/components/cars/CarGallery";
 import { CarParameters } from "@/components/cars/CarParameters";
 import { CarBookingSection } from "@/components/cars/CarBookingSection";
 import { SimilarCars } from "@/components/cars/SimilarCars";
+import { MobileBookingBar } from "@/components/cars/MobileBookingBar";
 import { getCarBySlug, getSimilarCars, getAllCarSlugs } from "@/server/catalog";
 import { site } from "@/data/site";
 import { formatCurrency } from "@/lib/currency";
@@ -62,79 +63,85 @@ export default async function CarPage({ params }: { params: Promise<Params> }) {
   ];
 
   return (
-    <Container className="py-8 sm:py-10">
-      <nav aria-label="breadcrumb" className="text-sm text-ink/60">
-        <ol className="flex flex-wrap items-center gap-1.5">
-          <li><Link href="/" className="transition-colors hover:text-ink">{t("breadcrumbHome")}</Link></li>
-          <li aria-hidden="true">/</li>
-          <li><Link href="/cars" className="transition-colors hover:text-ink">{t("breadcrumbCars")}</Link></li>
-          <li aria-hidden="true">/</li>
-          <li className="font-medium text-ink" aria-current="page" dir="ltr">{car.fullName}</li>
-        </ol>
-      </nav>
+    <div className="bg-graphite text-milk">
+      <Container className="py-8 pb-28 sm:py-10 lg:pb-10">
+        <nav aria-label="breadcrumb" className="text-sm text-milk-dim">
+          <ol className="flex flex-wrap items-center gap-1.5">
+            <li><Link href="/" className="transition-colors hover:text-milk">{t("breadcrumbHome")}</Link></li>
+            <li aria-hidden="true" className="text-milk/30">/</li>
+            <li><Link href="/cars" className="transition-colors hover:text-milk">{t("breadcrumbCars")}</Link></li>
+            <li aria-hidden="true" className="text-milk/30">/</li>
+            <li className="font-medium text-milk" aria-current="page" dir="ltr">{car.fullName}</li>
+          </ol>
+        </nav>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <CarGallery images={car.images} alt={car.imageAlt} />
+        <div className="mt-6 grid gap-8 lg:grid-cols-2">
+          <CarGallery images={car.images} alt={car.imageAlt} />
 
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-ink">{categoryName(car.category, l)}</span>
-            <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-ink">{t("year", { year: car.year })}</span>
-            <span className={`rounded-full px-3 py-1 text-xs font-semibold text-white ${car.available ? "bg-emerald-500" : "bg-ink/70"}`}>
-              {car.available ? t("inStock") : t("notInStock")}
-            </span>
-          </div>
-
-          <h1 dir="ltr" className="mt-3 text-3xl font-extrabold tracking-tight text-ink text-start sm:text-4xl">{car.fullName}</h1>
-
-          <p className="mt-3 text-base leading-7 text-ink/70">{carDescription(slug, l)}</p>
-
-          <div className="mt-5 flex flex-wrap items-end gap-x-8 gap-y-3 rounded-2xl border border-line bg-white p-5">
-            <div>
-              <p className="text-xs text-ink/50">{t("priceFrom")}</p>
-              <p className="text-3xl font-extrabold leading-none text-ink">
-                <span dir="ltr">{formatCurrency(car.dailyPrice)}</span>
-                <span className="ms-1 text-sm font-semibold text-ink/60">{tc("perDay")}</span>
-              </p>
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-[2px] border border-champagne/60 px-3 py-1 text-xs font-semibold tracking-wide text-champagne">{categoryName(car.category, l)}</span>
+              <span className="rounded-[2px] border border-white/15 px-3 py-1 text-xs font-semibold text-milk/80" dir="ltr">{t("year", { year: car.year })}</span>
+              <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-white/10 px-3 py-1 text-xs font-medium text-milk">
+                <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${car.available ? "bg-emerald-400" : "bg-milk-dim"}`} />
+                {car.available ? t("inStock") : t("notInStock")}
+              </span>
             </div>
-            <div>
-              <p className="text-xs text-ink/50">{t("depositReturnable")}</p>
-              <p className="text-xl font-bold text-ink" dir="ltr">{formatCurrency(car.deposit)}</p>
-            </div>
-          </div>
 
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="#booking" variant="primary" size="lg" className="sm:flex-1">{t("book")}</ButtonLink>
-            <ButtonLink href="#calculator" variant="ghost" size="lg" className="sm:flex-1">{t("calc")}</ButtonLink>
+            <h1 dir="ltr" className="font-display mt-4 text-4xl font-semibold leading-[1.02] tracking-tight text-milk text-start sm:text-5xl">{car.fullName}</h1>
+
+            <p className="mt-4 text-base leading-7 text-milk/75">{carDescription(slug, l)}</p>
+
+            <div className="dr-panel mt-6 flex flex-wrap items-end gap-x-8 gap-y-3 p-5">
+              <div>
+                <p className="text-xs text-milk-dim">{t("priceFrom")}</p>
+                <p className="text-4xl font-extrabold leading-none text-champagne">
+                  <span dir="ltr">{formatCurrency(car.dailyPrice)}</span>
+                  <span className="ms-1 text-sm font-semibold text-milk/60">{tc("perDay")}</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-milk-dim">{t("depositReturnable")}</p>
+                <p className="text-xl font-bold text-milk" dir="ltr">{formatCurrency(car.deposit)}</p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#booking" variant="champagne" size="lg" className="sm:flex-1">{t("book")}</ButtonLink>
+              <ButtonLink href="#calculator" variant="outlineOnDark" size="lg" className="sm:flex-1">{t("calc")}</ButtonLink>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-12">
-        <CarParameters car={car} />
-      </div>
-
-      <section className="mt-12" aria-labelledby="terms-heading">
-        <h2 id="terms-heading" className="text-2xl font-bold tracking-tight text-ink">{t("termsSectionTitle")}</h2>
-        <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {terms.map((term) => (
-            <div key={term.label} className="rounded-2xl border border-line bg-white p-5">
-              <dt className="text-sm font-medium text-ink/50">{term.label}</dt>
-              <dd className="mt-1 text-base font-semibold text-ink">{term.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <div className="mt-12">
-        <CarBookingSection car={car} />
-      </div>
-
-      {similar.length > 0 && (
         <div className="mt-12">
-          <SimilarCars cars={similar} />
+          <CarParameters car={car} />
         </div>
-      )}
-    </Container>
+
+        <section className="mt-12" aria-labelledby="terms-heading">
+          <h2 id="terms-heading" className="font-display text-3xl font-semibold tracking-tight text-milk">{t("termsSectionTitle")}</h2>
+          <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {terms.map((term) => (
+              <div key={term.label} className="dr-panel p-5">
+                <dt className="text-sm font-medium text-milk-dim">{term.label}</dt>
+                <dd className="mt-1 text-base font-semibold text-milk">{term.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <div className="mt-12">
+          <CarBookingSection car={car} />
+        </div>
+
+        {similar.length > 0 && (
+          <div className="mt-12">
+            <SimilarCars cars={similar} />
+          </div>
+        )}
+      </Container>
+
+      {/* Мобильная нижняя sticky-CTA (desktop скрыта) */}
+      <MobileBookingBar carName={car.fullName} priceLabel={`${formatCurrency(car.dailyPrice)}${tc("perDay")}`} ctaLabel={t("book")} />
+    </div>
   );
 }

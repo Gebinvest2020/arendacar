@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { CatalogFilters } from "./CatalogFilters";
-import { CatalogCarCard } from "./CatalogCarCard";
+import { PremiumCarCard } from "./PremiumCarCard";
 import {
   applyFilters,
   filtersToQuery,
@@ -35,7 +35,11 @@ export function CarsCatalog({
   initialFilters: Filters;
 }) {
   const t = useTranslations("catalog");
-  const categoryOptions = categories.map((c) => ({ value: c.slug, label: c.name }));
+  // Показываем в фильтре только категории, у которых есть машины (пустые скрываем —
+  // без изменения данных/запросов, чисто визуальный фильтр опций).
+  const categoryOptions = categories
+    .filter((c) => cars.some((car) => car.category === c.slug))
+    .map((c) => ({ value: c.slug, label: c.name }));
   const router = useRouter();
   const pathname = usePathname(); // включает /{locale}/cars — locale сохраняется
 
@@ -65,15 +69,15 @@ export function CarsCatalog({
           onClick={() => setShowFilters((v) => !v)}
           aria-expanded={showFilters}
           aria-controls="catalog-filters"
-          className="mb-4 flex w-full items-center justify-between rounded-xl border border-line bg-white px-4 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink lg:hidden"
+          className="mb-4 flex min-h-11 w-full items-center justify-between rounded-[3px] border border-white/12 bg-surface2 px-4 py-3 text-sm font-semibold text-milk transition-colors hover:border-white/25 lg:hidden"
         >
           <span>{t("filters")}{activeCount > 0 ? ` (${activeCount})` : ""}</span>
-          <span className="text-ink/50">{showFilters ? t("hide") : t("show")}</span>
+          <span className="text-champagne">{showFilters ? t("hide") : t("show")}</span>
         </button>
 
         <div
           id="catalog-filters"
-          className={`${showFilters ? "block" : "hidden"} rounded-2xl border border-line bg-muted/40 p-4 lg:block`}
+          className={`${showFilters ? "block" : "hidden"} dr-panel bg-graphite-2 p-4 lg:block`}
         >
           <CatalogFilters
             filters={filters}
@@ -86,16 +90,16 @@ export function CarsCatalog({
 
       <div className="mt-6 lg:mt-0">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-ink/70" aria-live="polite">
-            {t("found")} <span className="font-bold text-ink">{results.length}</span>
+          <p className="text-sm font-medium text-milk/70" aria-live="polite">
+            {t("found")} <span className="font-bold text-milk">{results.length}</span>
           </p>
           <div className="flex items-center gap-2">
-            <label htmlFor="catalog-sort" className="text-sm text-ink/60">{t("sortLabel")}</label>
+            <label htmlFor="catalog-sort" className="text-sm text-milk-dim">{t("sortLabel")}</label>
             <select
               id="catalog-sort"
               value={filters.sort}
               onChange={(e) => update({ sort: e.target.value as SortValue })}
-              className="h-10 rounded-lg border border-line bg-white px-3 text-sm font-medium text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="h-10 rounded-[3px] border border-white/12 bg-white/5 px-3 text-sm font-medium text-milk [color-scheme:dark] transition-colors hover:border-white/25 focus-visible:border-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/40"
             >
               {sortOptions.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -107,19 +111,19 @@ export function CarsCatalog({
         </div>
 
         {results.length > 0 ? (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 sm:gap-6">
             {results.map((car) => (
-              <CatalogCarCard key={car.id} car={car} />
+              <PremiumCarCard key={car.id} car={car} />
             ))}
           </div>
         ) : (
-          <div className="mt-10 rounded-2xl border border-dashed border-line bg-white p-10 text-center">
-            <p className="text-lg font-semibold text-ink">{t("notFound")}</p>
-            <p className="mt-2 text-sm text-ink/60">{t("notFoundText")}</p>
+          <div className="dr-panel mt-10 p-10 text-center">
+            <p className="font-display text-2xl font-semibold text-milk">{t("notFound")}</p>
+            <p className="mt-2 text-sm text-milk-dim">{t("notFoundText")}</p>
             <button
               type="button"
               onClick={reset}
-              className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-ink transition-colors hover:bg-accent-dark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-[3px] bg-champagne px-6 text-sm font-semibold text-graphite transition-colors hover:bg-champagne-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/60 focus-visible:ring-offset-2 focus-visible:ring-offset-graphite"
             >
               {t("clearFilters")}
             </button>

@@ -19,19 +19,21 @@ export default function CarsError({
   }, [error]);
 
   return (
-    <Container className="py-20 text-center">
-      <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-        Не удалось загрузить каталог
-      </h1>
-      <p className="mx-auto mt-3 max-w-md text-base leading-7 text-ink/60">
-        Похоже, сервис временно недоступен. Пожалуйста, попробуйте обновить
-        страницу через несколько секунд.
-      </p>
-      <div className="mt-6 flex justify-center">
-        <Button variant="primary" size="lg" onClick={() => reset()}>
-          Попробовать снова
-        </Button>
-      </div>
-    </Container>
+    <div className="bg-graphite">
+      <Container className="py-20 text-center">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-milk">
+          Не удалось загрузить каталог
+        </h1>
+        <p className="mx-auto mt-3 max-w-md text-base leading-7 text-milk/70">
+          Похоже, сервис временно недоступен. Пожалуйста, попробуйте обновить
+          страницу через несколько секунд.
+        </p>
+        <div className="mt-6 flex justify-center">
+          <Button variant="champagne" size="lg" onClick={() => reset()}>
+            Попробовать снова
+          </Button>
+        </div>
+      </Container>
+    </div>
   );
 }

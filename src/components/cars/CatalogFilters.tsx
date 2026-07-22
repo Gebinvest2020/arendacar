@@ -29,12 +29,12 @@ function SelectField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-xs font-semibold text-ink/60">{label}</label>
+      <label htmlFor={id} className="dr-label">{label}</label>
       <select
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-11 w-full rounded-lg border border-line bg-white px-3 text-sm text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="dr-field"
       >
         <option value="">{placeholder}</option>
         {options.map((o) => (
@@ -64,8 +64,7 @@ export function CatalogFilters({
   const t = useTranslations("catalog");
   const locale = useLocale() as Locale;
 
-  const priceField =
-    "h-11 w-full rounded-lg border border-line bg-white px-3 text-sm text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
+  const priceField = "dr-field";
 
   const categoryOpts = categoryOptions.map((o) => ({ value: o.value, label: categoryName(o.value, locale) }));
   const transmissionOpts = transmissionOptions.map((o) => ({ value: o.value, label: t(TR[o.value]) }));
@@ -82,22 +81,22 @@ export function CatalogFilters({
       <SelectField id="filter-seats" label={t("seatsLabel")} value={filters.seats} options={seatsOpts} placeholder={t("anySeats")} onChange={(v) => onChange({ seats: v })} />
 
       <div>
-        <span className="mb-1 block text-xs font-semibold text-ink/60">{t("priceRange")}</span>
+        <span className="dr-label">{t("priceRange")}</span>
         <div className="flex items-center gap-2">
           <label htmlFor="filter-min-price" className="sr-only">{t("priceMinAria")}</label>
           <input id="filter-min-price" type="number" inputMode="numeric" min={0} placeholder={t("priceMin")} value={filters.minPrice} onChange={(e) => onChange({ minPrice: e.target.value })} className={priceField} dir="ltr" />
-          <span className="text-ink/40">—</span>
+          <span className="text-milk-dim">—</span>
           <label htmlFor="filter-max-price" className="sr-only">{t("priceMaxAria")}</label>
           <input id="filter-max-price" type="number" inputMode="numeric" min={0} placeholder={t("priceMax")} value={filters.maxPrice} onChange={(e) => onChange({ maxPrice: e.target.value })} className={priceField} dir="ltr" />
         </div>
       </div>
 
-      <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink">
-        <input type="checkbox" checked={filters.onlyAvailable} onChange={(e) => onChange({ onlyAvailable: e.target.checked })} className="h-4 w-4 rounded border-line text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+      <label className="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[3px] border border-white/10 px-3 py-2.5 text-sm font-medium text-milk transition-colors hover:border-white/25">
+        <input type="checkbox" checked={filters.onlyAvailable} onChange={(e) => onChange({ onlyAvailable: e.target.checked })} className="h-4 w-4 rounded-[2px] border-white/25 bg-transparent text-champagne accent-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/50" />
         {t("onlyAvailable")}
       </label>
 
-      <button type="button" onClick={onReset} className="w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-ink hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+      <button type="button" onClick={onReset} className="min-h-11 w-full rounded-[3px] border border-white/20 px-3 py-2.5 text-sm font-semibold text-milk transition-colors hover:border-champagne hover:text-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/50">
         {t("clearFilters")}
       </button>
     </div>

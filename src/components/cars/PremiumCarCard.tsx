@@ -16,8 +16,8 @@ function Spec({ icon, label }: { icon: React.ReactNode; label: string }) {
   );
 }
 
-// Премиум-карточка для блока популярных на главной (тёмная showroom-поверхность).
-// Отдельный компонент — общий CatalogCarCard (каталог/похожие) не затрагивается.
+// Единая премиум-карточка автомобиля (тёмная showroom-поверхность).
+// Используется на главной (популярные), в каталоге и в блоке «похожие».
 export function PremiumCarCard({ car }: { car: Car }) {
   const t = useTranslations("carCard");
   const tc = useTranslations("common");
