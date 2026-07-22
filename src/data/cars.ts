@@ -414,7 +414,7 @@ export const cars: Car[] = [
     brand: "Audi",
     model: "Q3",
     fullName: "Audi Q3",
-    category: "suv",
+    category: "premium",
     bodyType: "Кроссовер",
     city: "Одесса",
     image: "/cars/audi-q3/01-main.webp",
