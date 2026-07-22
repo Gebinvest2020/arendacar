@@ -46,8 +46,8 @@ export default async function Home({
   return (
     <>
       <Hero minimumDailyPrice={minimumDailyPrice} />
-      <Categories categories={categories} />
       <PopularCars cars={featured} />
+      <Categories categories={categories} />
       <Advantages />
       <HowItWorks />
       <Terms />

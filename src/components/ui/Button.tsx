@@ -1,16 +1,20 @@
 import { Link } from "@/i18n/navigation";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "champagne" | "outlineOnDark";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 font-semibold transition-[color,background-color,border-color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-champagne/60 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-ink hover:bg-accent-dark hover:text-white",
-  secondary: "bg-ink text-white hover:bg-ink-soft",
-  ghost: "border border-line bg-white text-ink hover:border-ink hover:bg-muted",
+  // Legacy (светлые страницы: каталог, формы) — без изменений внешнего вида.
+  primary: "rounded-full bg-accent text-ink hover:bg-accent-dark hover:text-white focus-visible:ring-accent focus-visible:ring-offset-white",
+  secondary: "rounded-full bg-ink text-white hover:bg-ink-soft focus-visible:ring-accent focus-visible:ring-offset-white",
+  ghost: "rounded-full border border-line bg-white text-ink hover:border-ink hover:bg-muted focus-visible:ring-accent focus-visible:ring-offset-white",
+  // Premium (тёмные поверхности): строгие прямые углы, шампань-акцент.
+  champagne: "rounded-[3px] bg-champagne text-graphite hover:bg-champagne-dark focus-visible:ring-offset-graphite",
+  outlineOnDark: "rounded-[3px] border border-white/25 text-milk hover:border-champagne hover:text-champagne focus-visible:ring-offset-graphite",
 };
 
 const sizes: Record<Size, string> = {

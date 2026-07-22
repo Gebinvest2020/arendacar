@@ -2,15 +2,27 @@
 
 /* Дизайн-система DriveRent: собственная палитра (не шаблон, без кислотных цветов) */
 @theme {
-  --color-ink: #0f172a;        /* основной тёмный (тексты, тёмные секции) */
+  --color-ink: #0f172a;        /* основной тёмный (тексты, светлые секции) */
   --color-ink-soft: #1e293b;   /* тёмный, чуть светлее (hover) */
   --color-muted: #f5f6f8;      /* светлый фон секций */
-  --color-line: #e6e8ec;       /* границы */
-  --color-accent: #f59e0b;     /* акцент (тёплый янтарь) */
-  --color-accent-dark: #d97706;/* акцент при наведении */
+  --color-line: #e6e8ec;       /* границы на светлом */
+  --color-accent: #f59e0b;     /* янтарь — legacy-акцент светлых страниц (каталог, формы) */
+  --color-accent-dark: #d97706;/* янтарь при наведении */
+
+  /* --- Premium showroom (Phase Premium-1): тёмные графитовые поверхности --- */
+  --color-graphite: #121316;   /* основной тёмный фон сцены */
+  --color-graphite-2: #17181c; /* второй тёмный фон */
+  --color-surface2: #202227;   /* поверхность тёмной карточки */
+  --color-panel: #f3f1ec;      /* редкая светлая поверхность */
+  --color-milk: #f4f2ee;       /* основной светлый текст на тёмном */
+  --color-milk-dim: #a9a39a;   /* вторичный текст на тёмном */
+  --color-champagne: #c8a96a;  /* спокойный акцент шампань */
+  --color-champagne-dark: #b4964f; /* акцент при наведении */
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Заголовки: Oswald (латиница/кириллица), иврит — системный fallback */
+  --font-display: var(--font-display-face), var(--font-geist-sans), system-ui, sans-serif;
 }
 
 :root {
@@ -26,4 +38,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, Arial, Helvetica, sans-serif;
+}
+
+/* Заголовки премиум-дизайна используют утилиту font-display (из --font-display).
+   Короткий line-height и трекинг задаются в компонентах, uppercase не форсируем. */
+
+/* Мягкие премиум-переходы; уважают prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes dr-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-rise {
+  animation: dr-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
