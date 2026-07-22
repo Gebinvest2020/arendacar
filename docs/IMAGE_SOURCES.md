@@ -2,9 +2,9 @@
 
 Фотографии реального автопарка владельца. Владелец предоставил ссылки на объявления AUTO.RIA и разрешил использовать информацию и фотографии своих машин для сайта аренды.
 
-Обработка: скачаны оригиналы с CDN AUTO.RIA, приведены к единому формату 1280×853 (3:2) и сконвертированы в WebP (качество 80) через sharp. Водяные знаки не удалялись и не размывались. Никаких элементов интерфейса AUTO.RIA, цен продажи и контактов продавца в файлы не попало.
+Обработка: скачаны оригиналы с CDN AUTO.RIA (вариант fhd), приведены к единому формату 1280×853 (3:2) и сконвертированы в WebP (качество 80) через sharp. Водяные знаки не удалялись и не размывались. Никаких элементов интерфейса AUTO.RIA, цен продажи и контактов продавца в файлы не попало.
 
-> Примечание: имена файлов (01-main … 06-extra) соответствуют порядку галереи объявления, а не строго ракурсу в названии — при необходимости порядок/подписи можно переназначить.
+Фото отобраны вручную: обложка (`01-main`) — презентабельный передний 3/4 или фронт-боковой ракурс; `05-interior` — реальное фото салона у каждой машины.
 
 ## Porsche Cayenne 2018
 
@@ -17,7 +17,7 @@
 | `02-front.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177902fhd.webp |
 | `03-side.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177901fhd.webp |
 | `04-rear.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177899fhd.webp |
-| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177917fhd.webp |
+| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177971fhd.webp |
 | `06-extra.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_cayenne__642177923fhd.webp |
 
 ## Audi SQ5 2021
@@ -31,7 +31,7 @@
 | `02-front.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741741fhd.webp |
 | `03-side.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741740fhd.webp |
 | `04-rear.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741739fhd.webp |
-| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741744fhd.webp |
+| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741791fhd.webp |
 | `06-extra.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_sq5__647741745fhd.webp |
 
 ## Porsche Macan 2016
@@ -41,12 +41,12 @@
 
 | Файл | Источник (CDN AUTO.RIA) |
 |---|---|
-| `01-main.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530695fhd.webp |
-| `02-front.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530696fhd.webp |
-| `03-side.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530698fhd.webp |
-| `04-rear.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530699fhd.webp |
-| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530701fhd.webp |
-| `06-extra.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530703fhd.webp |
+| `01-main.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530731fhd.webp |
+| `02-front.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530730fhd.webp |
+| `03-side.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530739fhd.webp |
+| `04-rear.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530695fhd.webp |
+| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530740fhd.webp |
+| `06-extra.webp` | https://cdn.riastatic.com/photosnew/auto/photo/porsche_macan__605530729fhd.webp |
 
 ## Audi Q3 2020
 
@@ -59,6 +59,6 @@
 | `02-front.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264648fhd.webp |
 | `03-side.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264650fhd.webp |
 | `04-rear.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264647fhd.webp |
-| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264651fhd.webp |
+| `05-interior.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264663fhd.webp |
 | `06-extra.webp` | https://cdn.riastatic.com/photosnew/auto/photo/audi_q3__646264652fhd.webp |
 
