@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { site, cities } from "@/data/site";
+import { site } from "@/data/site";
 import { translateCity } from "@/lib/car-content";
 import type { Locale } from "@/lib/locale";
 import { formatCurrency } from "@/lib/currency";
@@ -16,7 +16,8 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
   const locale = useLocale() as Locale;
   const perks = [t("hero.perk1"), t("hero.perk2"), t("hero.perk3")];
   const router = useRouter();
-  const [city, setCity] = useState<string>(site.defaultCity);
+  // Город всегда Одесса — выбора нет (см. site.cities). Показываем фиксированно.
+  const cityLabel = translateCity(site.defaultCity, locale);
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("10:00");
   const [returnDate, setReturnDate] = useState("");
@@ -44,7 +45,7 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
         {/* Левая часть: заголовок + форма */}
         <div>
           <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/80">
-            {t("hero.badge", { city: site.defaultCity })}
+            {t("hero.badge", { city: cityLabel })}
           </span>
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
             {t("hero.title")}
@@ -60,24 +61,13 @@ export function Hero({ minimumDailyPrice }: { minimumDailyPrice: number | null }
           >
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="hero-city"
-                  className="mb-1 block text-xs font-semibold text-ink/60"
-                >
+                <span className="mb-1 block text-xs font-semibold text-ink/60">
                   {t("common.city")}
-                </label>
-                <select
-                  id="hero-city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  className={fieldClass}
-                >
-                  {cities.map((c) => (
-                    <option key={c} value={c}>
-                      {translateCity(c, locale)}
-                    </option>
-                  ))}
-                </select>
+                </span>
+                {/* Город фиксирован — Одесса. Выбора нет. */}
+                <div className={`${fieldClass} flex items-center font-medium`} aria-label={t("common.city")}>
+                  {cityLabel}
+                </div>
               </div>
 
               <div>

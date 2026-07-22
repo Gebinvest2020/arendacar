@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/Button";
-import { site, cities } from "@/data/site";
+import { site } from "@/data/site";
 import { translateCity } from "@/lib/car-content";
 import type { Locale } from "@/lib/locale";
 
@@ -12,7 +12,8 @@ export function CatalogSearch() {
   const t = useTranslations();
   const tc = useTranslations("catalog");
   const locale = useLocale() as Locale;
-  const [city, setCity] = useState<string>(site.defaultCity);
+  // Город всегда Одесса — выбора нет.
+  const cityLabel = translateCity(site.defaultCity, locale);
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("10:00");
   const [returnDate, setReturnDate] = useState("");
@@ -33,10 +34,9 @@ export function CatalogSearch() {
     >
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
-          <label htmlFor="search-city" className="mb-1 block text-xs font-semibold text-ink/60">{t("common.city")}</label>
-          <select id="search-city" value={city} onChange={(e) => setCity(e.target.value)} className={field}>
-            {cities.map((c) => (<option key={c} value={c}>{translateCity(c, locale)}</option>))}
-          </select>
+          <span className="mb-1 block text-xs font-semibold text-ink/60">{t("common.city")}</span>
+          {/* Город фиксирован — Одесса. Выбора нет. */}
+          <div className={`${field} flex items-center font-medium`} aria-label={t("common.city")}>{cityLabel}</div>
         </div>
 
         <div>

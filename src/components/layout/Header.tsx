@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { site, cities } from "@/data/site";
+import { site } from "@/data/site";
 import { translateCity } from "@/lib/car-content";
 import type { Locale } from "@/lib/locale";
 
@@ -14,7 +14,8 @@ export function Header() {
   const t = useTranslations();
   const locale = useLocale() as Locale;
   const [menuOpen, setMenuOpen] = useState(false);
-  const [city, setCity] = useState<string>(site.defaultCity);
+  // Город всегда Одесса — выбора нет.
+  const cityLabel = translateCity(site.defaultCity, locale);
 
   const phoneHref = "tel:" + site.phone.replace(/[^\d+]/g, "");
 
@@ -58,17 +59,13 @@ export function Header() {
         {/* Правый блок: язык, город, телефон, CTA (десктоп) */}
         <div className="hidden shrink-0 items-center gap-3 lg:flex">
           <LanguageSwitcher />
-          <label className="sr-only" htmlFor="city-desktop">{t("common.city")}</label>
-          <select
-            id="city-desktop"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="h-10 rounded-lg border border-line bg-white px-2.5 text-sm font-medium text-ink transition-colors hover:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          {/* Город фиксирован — Одесса. Выбора нет. */}
+          <span
+            className="inline-flex h-10 items-center rounded-lg border border-line bg-white px-2.5 text-sm font-medium text-ink"
+            aria-label={t("common.city")}
           >
-            {cities.map((c) => (
-              <option key={c} value={c}>{translateCity(c, locale)}</option>
-            ))}
-          </select>
+            {cityLabel}
+          </span>
           <a href={phoneHref} dir="ltr" className="hidden whitespace-nowrap text-sm font-semibold text-ink transition-colors hover:text-accent-dark xl:block">
             {site.phone}
           </a>
@@ -114,19 +111,16 @@ export function Header() {
             <div className="flex flex-col gap-3 border-t border-line pt-4">
               <LanguageSwitcher />
               <div>
-                <label className="mb-1 block text-xs font-medium text-ink/60" htmlFor="city-mobile">
+                <span className="mb-1 block text-xs font-medium text-ink/60">
                   {t("common.city")}
-                </label>
-                <select
-                  id="city-mobile"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  className="h-11 w-full rounded-lg border border-line bg-white px-3 text-sm font-medium text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                </span>
+                {/* Город фиксирован — Одесса. Выбора нет. */}
+                <div
+                  className="flex h-11 w-full items-center rounded-lg border border-line bg-white px-3 text-sm font-medium text-ink"
+                  aria-label={t("common.city")}
                 >
-                  {cities.map((c) => (
-                    <option key={c} value={c}>{translateCity(c, locale)}</option>
-                  ))}
-                </select>
+                  {cityLabel}
+                </div>
               </div>
               <a href={phoneHref} dir="ltr" className="text-base font-semibold text-ink transition-colors hover:text-accent-dark">
                 {site.phone}
